@@ -4,11 +4,11 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Piano Synthesis — ABCX Bandwidth Discrimination Test</title>
-<script src="https://unpkg.com/jspsych@7.3.4/dist/jspsych.js"></script>
+<script src="https://unpkg.com/jspsych@7.3.4/dist/index.browser.min.js"></script>
 <script src="https://unpkg.com/@jspsych/plugin-html-keyboard-response@1.1.3/dist/index.browser.min.js"></script>
 <script src="https://unpkg.com/@jspsych/plugin-html-button-response@1.1.3/dist/index.browser.min.js"></script>
 <script src="https://unpkg.com/@jspsych/plugin-survey-text@1.1.3/dist/index.browser.min.js"></script>
-<link  href="https://unpkg.com/jspsych@7.3.4/dist/jspsych.css" rel="stylesheet">
+<link  href="https://unpkg.com/jspsych@7.3.4/css/jspsych.css" rel="stylesheet">
 <style>
   .audio-grid {
     display: grid;
@@ -64,14 +64,14 @@ const allBlocks = [
     },
     "trials": [
       {
-        "excerpt": "piece_13",
+        "excerpt": "piece_28",
         "bw_label": "Full Bandwidth",
         "bw_tag": "full",
         "x_condition": "fluidsynth",
-        "audio_A": "https://ejkennedy.github.io/piano-eval-audio/audio/clean/piece_13/fluidsynth.wav",
-        "audio_B": "https://ejkennedy.github.io/piano-eval-audio/audio/clean/piece_13/generated.wav",
-        "audio_C": "https://ejkennedy.github.io/piano-eval-audio/audio/clean/piece_13/original.wav",
-        "audio_X": "https://ejkennedy.github.io/piano-eval-audio/audio/clean/piece_13/fluidsynth.wav"
+        "audio_A": "https://ejkennedy.github.io/piano-eval-audio/audio/clean/piece_28/fluidsynth.wav",
+        "audio_B": "https://ejkennedy.github.io/piano-eval-audio/audio/clean/piece_28/generated.wav",
+        "audio_C": "https://ejkennedy.github.io/piano-eval-audio/audio/clean/piece_28/original.wav",
+        "audio_X": "https://ejkennedy.github.io/piano-eval-audio/audio/clean/piece_28/fluidsynth.wav"
       },
       {
         "excerpt": "piece_06",
@@ -84,34 +84,14 @@ const allBlocks = [
         "audio_X": "https://ejkennedy.github.io/piano-eval-audio/audio/clean/piece_06/original.wav"
       },
       {
-        "excerpt": "piece_28",
-        "bw_label": "Full Bandwidth",
-        "bw_tag": "full",
-        "x_condition": "generated",
-        "audio_A": "https://ejkennedy.github.io/piano-eval-audio/audio/clean/piece_28/fluidsynth.wav",
-        "audio_B": "https://ejkennedy.github.io/piano-eval-audio/audio/clean/piece_28/generated.wav",
-        "audio_C": "https://ejkennedy.github.io/piano-eval-audio/audio/clean/piece_28/original.wav",
-        "audio_X": "https://ejkennedy.github.io/piano-eval-audio/audio/clean/piece_28/generated.wav"
-      },
-      {
         "excerpt": "piece_13",
         "bw_label": "Full Bandwidth",
         "bw_tag": "full",
-        "x_condition": "generated",
+        "x_condition": "fluidsynth",
         "audio_A": "https://ejkennedy.github.io/piano-eval-audio/audio/clean/piece_13/fluidsynth.wav",
         "audio_B": "https://ejkennedy.github.io/piano-eval-audio/audio/clean/piece_13/generated.wav",
         "audio_C": "https://ejkennedy.github.io/piano-eval-audio/audio/clean/piece_13/original.wav",
-        "audio_X": "https://ejkennedy.github.io/piano-eval-audio/audio/clean/piece_13/generated.wav"
-      },
-      {
-        "excerpt": "piece_25",
-        "bw_label": "Full Bandwidth",
-        "bw_tag": "full",
-        "x_condition": "fluidsynth",
-        "audio_A": "https://ejkennedy.github.io/piano-eval-audio/audio/clean/piece_25/fluidsynth.wav",
-        "audio_B": "https://ejkennedy.github.io/piano-eval-audio/audio/clean/piece_25/generated.wav",
-        "audio_C": "https://ejkennedy.github.io/piano-eval-audio/audio/clean/piece_25/original.wav",
-        "audio_X": "https://ejkennedy.github.io/piano-eval-audio/audio/clean/piece_25/fluidsynth.wav"
+        "audio_X": "https://ejkennedy.github.io/piano-eval-audio/audio/clean/piece_13/fluidsynth.wav"
       },
       {
         "excerpt": "piece_25",
@@ -122,16 +102,6 @@ const allBlocks = [
         "audio_B": "https://ejkennedy.github.io/piano-eval-audio/audio/clean/piece_25/generated.wav",
         "audio_C": "https://ejkennedy.github.io/piano-eval-audio/audio/clean/piece_25/original.wav",
         "audio_X": "https://ejkennedy.github.io/piano-eval-audio/audio/clean/piece_25/original.wav"
-      },
-      {
-        "excerpt": "piece_28",
-        "bw_label": "Full Bandwidth",
-        "bw_tag": "full",
-        "x_condition": "fluidsynth",
-        "audio_A": "https://ejkennedy.github.io/piano-eval-audio/audio/clean/piece_28/fluidsynth.wav",
-        "audio_B": "https://ejkennedy.github.io/piano-eval-audio/audio/clean/piece_28/generated.wav",
-        "audio_C": "https://ejkennedy.github.io/piano-eval-audio/audio/clean/piece_28/original.wav",
-        "audio_X": "https://ejkennedy.github.io/piano-eval-audio/audio/clean/piece_28/fluidsynth.wav"
       },
       {
         "excerpt": "piece_06",
@@ -147,6 +117,36 @@ const allBlocks = [
         "excerpt": "piece_17",
         "bw_label": "Full Bandwidth",
         "bw_tag": "full",
+        "x_condition": "generated",
+        "audio_A": "https://ejkennedy.github.io/piano-eval-audio/audio/clean/piece_17/fluidsynth.wav",
+        "audio_B": "https://ejkennedy.github.io/piano-eval-audio/audio/clean/piece_17/generated.wav",
+        "audio_C": "https://ejkennedy.github.io/piano-eval-audio/audio/clean/piece_17/original.wav",
+        "audio_X": "https://ejkennedy.github.io/piano-eval-audio/audio/clean/piece_17/generated.wav"
+      },
+      {
+        "excerpt": "piece_28",
+        "bw_label": "Full Bandwidth",
+        "bw_tag": "full",
+        "x_condition": "generated",
+        "audio_A": "https://ejkennedy.github.io/piano-eval-audio/audio/clean/piece_28/fluidsynth.wav",
+        "audio_B": "https://ejkennedy.github.io/piano-eval-audio/audio/clean/piece_28/generated.wav",
+        "audio_C": "https://ejkennedy.github.io/piano-eval-audio/audio/clean/piece_28/original.wav",
+        "audio_X": "https://ejkennedy.github.io/piano-eval-audio/audio/clean/piece_28/generated.wav"
+      },
+      {
+        "excerpt": "piece_25",
+        "bw_label": "Full Bandwidth",
+        "bw_tag": "full",
+        "x_condition": "fluidsynth",
+        "audio_A": "https://ejkennedy.github.io/piano-eval-audio/audio/clean/piece_25/fluidsynth.wav",
+        "audio_B": "https://ejkennedy.github.io/piano-eval-audio/audio/clean/piece_25/generated.wav",
+        "audio_C": "https://ejkennedy.github.io/piano-eval-audio/audio/clean/piece_25/original.wav",
+        "audio_X": "https://ejkennedy.github.io/piano-eval-audio/audio/clean/piece_25/fluidsynth.wav"
+      },
+      {
+        "excerpt": "piece_17",
+        "bw_label": "Full Bandwidth",
+        "bw_tag": "full",
         "x_condition": "original",
         "audio_A": "https://ejkennedy.github.io/piano-eval-audio/audio/clean/piece_17/fluidsynth.wav",
         "audio_B": "https://ejkennedy.github.io/piano-eval-audio/audio/clean/piece_17/generated.wav",
@@ -154,14 +154,14 @@ const allBlocks = [
         "audio_X": "https://ejkennedy.github.io/piano-eval-audio/audio/clean/piece_17/original.wav"
       },
       {
-        "excerpt": "piece_17",
+        "excerpt": "piece_13",
         "bw_label": "Full Bandwidth",
         "bw_tag": "full",
         "x_condition": "generated",
-        "audio_A": "https://ejkennedy.github.io/piano-eval-audio/audio/clean/piece_17/fluidsynth.wav",
-        "audio_B": "https://ejkennedy.github.io/piano-eval-audio/audio/clean/piece_17/generated.wav",
-        "audio_C": "https://ejkennedy.github.io/piano-eval-audio/audio/clean/piece_17/original.wav",
-        "audio_X": "https://ejkennedy.github.io/piano-eval-audio/audio/clean/piece_17/generated.wav"
+        "audio_A": "https://ejkennedy.github.io/piano-eval-audio/audio/clean/piece_13/fluidsynth.wav",
+        "audio_B": "https://ejkennedy.github.io/piano-eval-audio/audio/clean/piece_13/generated.wav",
+        "audio_C": "https://ejkennedy.github.io/piano-eval-audio/audio/clean/piece_13/original.wav",
+        "audio_X": "https://ejkennedy.github.io/piano-eval-audio/audio/clean/piece_13/generated.wav"
       }
     ]
   },
@@ -182,6 +182,26 @@ const allBlocks = [
         "audio_X": "https://ejkennedy.github.io/piano-eval-audio/audio/bandpassed/lp2k/piece_13/fluidsynth.wav"
       },
       {
+        "excerpt": "piece_17",
+        "bw_label": "Low-pass at 2 kHz",
+        "bw_tag": "lp2k",
+        "x_condition": "generated",
+        "audio_A": "https://ejkennedy.github.io/piano-eval-audio/audio/bandpassed/lp2k/piece_17/fluidsynth.wav",
+        "audio_B": "https://ejkennedy.github.io/piano-eval-audio/audio/bandpassed/lp2k/piece_17/generated.wav",
+        "audio_C": "https://ejkennedy.github.io/piano-eval-audio/audio/bandpassed/lp2k/piece_17/original.wav",
+        "audio_X": "https://ejkennedy.github.io/piano-eval-audio/audio/bandpassed/lp2k/piece_17/generated.wav"
+      },
+      {
+        "excerpt": "piece_28",
+        "bw_label": "Low-pass at 2 kHz",
+        "bw_tag": "lp2k",
+        "x_condition": "fluidsynth",
+        "audio_A": "https://ejkennedy.github.io/piano-eval-audio/audio/bandpassed/lp2k/piece_28/fluidsynth.wav",
+        "audio_B": "https://ejkennedy.github.io/piano-eval-audio/audio/bandpassed/lp2k/piece_28/generated.wav",
+        "audio_C": "https://ejkennedy.github.io/piano-eval-audio/audio/bandpassed/lp2k/piece_28/original.wav",
+        "audio_X": "https://ejkennedy.github.io/piano-eval-audio/audio/bandpassed/lp2k/piece_28/fluidsynth.wav"
+      },
+      {
         "excerpt": "piece_25",
         "bw_label": "Low-pass at 2 kHz",
         "bw_tag": "lp2k",
@@ -190,6 +210,36 @@ const allBlocks = [
         "audio_B": "https://ejkennedy.github.io/piano-eval-audio/audio/bandpassed/lp2k/piece_25/generated.wav",
         "audio_C": "https://ejkennedy.github.io/piano-eval-audio/audio/bandpassed/lp2k/piece_25/original.wav",
         "audio_X": "https://ejkennedy.github.io/piano-eval-audio/audio/bandpassed/lp2k/piece_25/fluidsynth.wav"
+      },
+      {
+        "excerpt": "piece_28",
+        "bw_label": "Low-pass at 2 kHz",
+        "bw_tag": "lp2k",
+        "x_condition": "generated",
+        "audio_A": "https://ejkennedy.github.io/piano-eval-audio/audio/bandpassed/lp2k/piece_28/fluidsynth.wav",
+        "audio_B": "https://ejkennedy.github.io/piano-eval-audio/audio/bandpassed/lp2k/piece_28/generated.wav",
+        "audio_C": "https://ejkennedy.github.io/piano-eval-audio/audio/bandpassed/lp2k/piece_28/original.wav",
+        "audio_X": "https://ejkennedy.github.io/piano-eval-audio/audio/bandpassed/lp2k/piece_28/generated.wav"
+      },
+      {
+        "excerpt": "piece_17",
+        "bw_label": "Low-pass at 2 kHz",
+        "bw_tag": "lp2k",
+        "x_condition": "original",
+        "audio_A": "https://ejkennedy.github.io/piano-eval-audio/audio/bandpassed/lp2k/piece_17/fluidsynth.wav",
+        "audio_B": "https://ejkennedy.github.io/piano-eval-audio/audio/bandpassed/lp2k/piece_17/generated.wav",
+        "audio_C": "https://ejkennedy.github.io/piano-eval-audio/audio/bandpassed/lp2k/piece_17/original.wav",
+        "audio_X": "https://ejkennedy.github.io/piano-eval-audio/audio/bandpassed/lp2k/piece_17/original.wav"
+      },
+      {
+        "excerpt": "piece_06",
+        "bw_label": "Low-pass at 2 kHz",
+        "bw_tag": "lp2k",
+        "x_condition": "fluidsynth",
+        "audio_A": "https://ejkennedy.github.io/piano-eval-audio/audio/bandpassed/lp2k/piece_06/fluidsynth.wav",
+        "audio_B": "https://ejkennedy.github.io/piano-eval-audio/audio/bandpassed/lp2k/piece_06/generated.wav",
+        "audio_C": "https://ejkennedy.github.io/piano-eval-audio/audio/bandpassed/lp2k/piece_06/original.wav",
+        "audio_X": "https://ejkennedy.github.io/piano-eval-audio/audio/bandpassed/lp2k/piece_06/fluidsynth.wav"
       },
       {
         "excerpt": "piece_13",
@@ -220,56 +270,6 @@ const allBlocks = [
         "audio_B": "https://ejkennedy.github.io/piano-eval-audio/audio/bandpassed/lp2k/piece_06/generated.wav",
         "audio_C": "https://ejkennedy.github.io/piano-eval-audio/audio/bandpassed/lp2k/piece_06/original.wav",
         "audio_X": "https://ejkennedy.github.io/piano-eval-audio/audio/bandpassed/lp2k/piece_06/original.wav"
-      },
-      {
-        "excerpt": "piece_28",
-        "bw_label": "Low-pass at 2 kHz",
-        "bw_tag": "lp2k",
-        "x_condition": "fluidsynth",
-        "audio_A": "https://ejkennedy.github.io/piano-eval-audio/audio/bandpassed/lp2k/piece_28/fluidsynth.wav",
-        "audio_B": "https://ejkennedy.github.io/piano-eval-audio/audio/bandpassed/lp2k/piece_28/generated.wav",
-        "audio_C": "https://ejkennedy.github.io/piano-eval-audio/audio/bandpassed/lp2k/piece_28/original.wav",
-        "audio_X": "https://ejkennedy.github.io/piano-eval-audio/audio/bandpassed/lp2k/piece_28/fluidsynth.wav"
-      },
-      {
-        "excerpt": "piece_06",
-        "bw_label": "Low-pass at 2 kHz",
-        "bw_tag": "lp2k",
-        "x_condition": "fluidsynth",
-        "audio_A": "https://ejkennedy.github.io/piano-eval-audio/audio/bandpassed/lp2k/piece_06/fluidsynth.wav",
-        "audio_B": "https://ejkennedy.github.io/piano-eval-audio/audio/bandpassed/lp2k/piece_06/generated.wav",
-        "audio_C": "https://ejkennedy.github.io/piano-eval-audio/audio/bandpassed/lp2k/piece_06/original.wav",
-        "audio_X": "https://ejkennedy.github.io/piano-eval-audio/audio/bandpassed/lp2k/piece_06/fluidsynth.wav"
-      },
-      {
-        "excerpt": "piece_17",
-        "bw_label": "Low-pass at 2 kHz",
-        "bw_tag": "lp2k",
-        "x_condition": "generated",
-        "audio_A": "https://ejkennedy.github.io/piano-eval-audio/audio/bandpassed/lp2k/piece_17/fluidsynth.wav",
-        "audio_B": "https://ejkennedy.github.io/piano-eval-audio/audio/bandpassed/lp2k/piece_17/generated.wav",
-        "audio_C": "https://ejkennedy.github.io/piano-eval-audio/audio/bandpassed/lp2k/piece_17/original.wav",
-        "audio_X": "https://ejkennedy.github.io/piano-eval-audio/audio/bandpassed/lp2k/piece_17/generated.wav"
-      },
-      {
-        "excerpt": "piece_28",
-        "bw_label": "Low-pass at 2 kHz",
-        "bw_tag": "lp2k",
-        "x_condition": "generated",
-        "audio_A": "https://ejkennedy.github.io/piano-eval-audio/audio/bandpassed/lp2k/piece_28/fluidsynth.wav",
-        "audio_B": "https://ejkennedy.github.io/piano-eval-audio/audio/bandpassed/lp2k/piece_28/generated.wav",
-        "audio_C": "https://ejkennedy.github.io/piano-eval-audio/audio/bandpassed/lp2k/piece_28/original.wav",
-        "audio_X": "https://ejkennedy.github.io/piano-eval-audio/audio/bandpassed/lp2k/piece_28/generated.wav"
-      },
-      {
-        "excerpt": "piece_17",
-        "bw_label": "Low-pass at 2 kHz",
-        "bw_tag": "lp2k",
-        "x_condition": "original",
-        "audio_A": "https://ejkennedy.github.io/piano-eval-audio/audio/bandpassed/lp2k/piece_17/fluidsynth.wav",
-        "audio_B": "https://ejkennedy.github.io/piano-eval-audio/audio/bandpassed/lp2k/piece_17/generated.wav",
-        "audio_C": "https://ejkennedy.github.io/piano-eval-audio/audio/bandpassed/lp2k/piece_17/original.wav",
-        "audio_X": "https://ejkennedy.github.io/piano-eval-audio/audio/bandpassed/lp2k/piece_17/original.wav"
       }
     ]
   },
@@ -280,74 +280,14 @@ const allBlocks = [
     },
     "trials": [
       {
-        "excerpt": "piece_28",
-        "bw_label": "Mid-range 300\u20138 kHz",
-        "bw_tag": "mid300_8k",
-        "x_condition": "generated",
-        "audio_A": "https://ejkennedy.github.io/piano-eval-audio/audio/bandpassed/mid300_8k/piece_28/fluidsynth.wav",
-        "audio_B": "https://ejkennedy.github.io/piano-eval-audio/audio/bandpassed/mid300_8k/piece_28/generated.wav",
-        "audio_C": "https://ejkennedy.github.io/piano-eval-audio/audio/bandpassed/mid300_8k/piece_28/original.wav",
-        "audio_X": "https://ejkennedy.github.io/piano-eval-audio/audio/bandpassed/mid300_8k/piece_28/generated.wav"
-      },
-      {
-        "excerpt": "piece_17",
-        "bw_label": "Mid-range 300\u20138 kHz",
-        "bw_tag": "mid300_8k",
-        "x_condition": "generated",
-        "audio_A": "https://ejkennedy.github.io/piano-eval-audio/audio/bandpassed/mid300_8k/piece_17/fluidsynth.wav",
-        "audio_B": "https://ejkennedy.github.io/piano-eval-audio/audio/bandpassed/mid300_8k/piece_17/generated.wav",
-        "audio_C": "https://ejkennedy.github.io/piano-eval-audio/audio/bandpassed/mid300_8k/piece_17/original.wav",
-        "audio_X": "https://ejkennedy.github.io/piano-eval-audio/audio/bandpassed/mid300_8k/piece_17/generated.wav"
-      },
-      {
-        "excerpt": "piece_06",
+        "excerpt": "piece_13",
         "bw_label": "Mid-range 300\u20138 kHz",
         "bw_tag": "mid300_8k",
         "x_condition": "fluidsynth",
-        "audio_A": "https://ejkennedy.github.io/piano-eval-audio/audio/bandpassed/mid300_8k/piece_06/fluidsynth.wav",
-        "audio_B": "https://ejkennedy.github.io/piano-eval-audio/audio/bandpassed/mid300_8k/piece_06/generated.wav",
-        "audio_C": "https://ejkennedy.github.io/piano-eval-audio/audio/bandpassed/mid300_8k/piece_06/original.wav",
-        "audio_X": "https://ejkennedy.github.io/piano-eval-audio/audio/bandpassed/mid300_8k/piece_06/fluidsynth.wav"
-      },
-      {
-        "excerpt": "piece_28",
-        "bw_label": "Mid-range 300\u20138 kHz",
-        "bw_tag": "mid300_8k",
-        "x_condition": "fluidsynth",
-        "audio_A": "https://ejkennedy.github.io/piano-eval-audio/audio/bandpassed/mid300_8k/piece_28/fluidsynth.wav",
-        "audio_B": "https://ejkennedy.github.io/piano-eval-audio/audio/bandpassed/mid300_8k/piece_28/generated.wav",
-        "audio_C": "https://ejkennedy.github.io/piano-eval-audio/audio/bandpassed/mid300_8k/piece_28/original.wav",
-        "audio_X": "https://ejkennedy.github.io/piano-eval-audio/audio/bandpassed/mid300_8k/piece_28/fluidsynth.wav"
-      },
-      {
-        "excerpt": "piece_25",
-        "bw_label": "Mid-range 300\u20138 kHz",
-        "bw_tag": "mid300_8k",
-        "x_condition": "original",
-        "audio_A": "https://ejkennedy.github.io/piano-eval-audio/audio/bandpassed/mid300_8k/piece_25/fluidsynth.wav",
-        "audio_B": "https://ejkennedy.github.io/piano-eval-audio/audio/bandpassed/mid300_8k/piece_25/generated.wav",
-        "audio_C": "https://ejkennedy.github.io/piano-eval-audio/audio/bandpassed/mid300_8k/piece_25/original.wav",
-        "audio_X": "https://ejkennedy.github.io/piano-eval-audio/audio/bandpassed/mid300_8k/piece_25/original.wav"
-      },
-      {
-        "excerpt": "piece_25",
-        "bw_label": "Mid-range 300\u20138 kHz",
-        "bw_tag": "mid300_8k",
-        "x_condition": "fluidsynth",
-        "audio_A": "https://ejkennedy.github.io/piano-eval-audio/audio/bandpassed/mid300_8k/piece_25/fluidsynth.wav",
-        "audio_B": "https://ejkennedy.github.io/piano-eval-audio/audio/bandpassed/mid300_8k/piece_25/generated.wav",
-        "audio_C": "https://ejkennedy.github.io/piano-eval-audio/audio/bandpassed/mid300_8k/piece_25/original.wav",
-        "audio_X": "https://ejkennedy.github.io/piano-eval-audio/audio/bandpassed/mid300_8k/piece_25/fluidsynth.wav"
-      },
-      {
-        "excerpt": "piece_17",
-        "bw_label": "Mid-range 300\u20138 kHz",
-        "bw_tag": "mid300_8k",
-        "x_condition": "original",
-        "audio_A": "https://ejkennedy.github.io/piano-eval-audio/audio/bandpassed/mid300_8k/piece_17/fluidsynth.wav",
-        "audio_B": "https://ejkennedy.github.io/piano-eval-audio/audio/bandpassed/mid300_8k/piece_17/generated.wav",
-        "audio_C": "https://ejkennedy.github.io/piano-eval-audio/audio/bandpassed/mid300_8k/piece_17/original.wav",
-        "audio_X": "https://ejkennedy.github.io/piano-eval-audio/audio/bandpassed/mid300_8k/piece_17/original.wav"
+        "audio_A": "https://ejkennedy.github.io/piano-eval-audio/audio/bandpassed/mid300_8k/piece_13/fluidsynth.wav",
+        "audio_B": "https://ejkennedy.github.io/piano-eval-audio/audio/bandpassed/mid300_8k/piece_13/generated.wav",
+        "audio_C": "https://ejkennedy.github.io/piano-eval-audio/audio/bandpassed/mid300_8k/piece_13/original.wav",
+        "audio_X": "https://ejkennedy.github.io/piano-eval-audio/audio/bandpassed/mid300_8k/piece_13/fluidsynth.wav"
       },
       {
         "excerpt": "piece_06",
@@ -360,6 +300,46 @@ const allBlocks = [
         "audio_X": "https://ejkennedy.github.io/piano-eval-audio/audio/bandpassed/mid300_8k/piece_06/original.wav"
       },
       {
+        "excerpt": "piece_06",
+        "bw_label": "Mid-range 300\u20138 kHz",
+        "bw_tag": "mid300_8k",
+        "x_condition": "fluidsynth",
+        "audio_A": "https://ejkennedy.github.io/piano-eval-audio/audio/bandpassed/mid300_8k/piece_06/fluidsynth.wav",
+        "audio_B": "https://ejkennedy.github.io/piano-eval-audio/audio/bandpassed/mid300_8k/piece_06/generated.wav",
+        "audio_C": "https://ejkennedy.github.io/piano-eval-audio/audio/bandpassed/mid300_8k/piece_06/original.wav",
+        "audio_X": "https://ejkennedy.github.io/piano-eval-audio/audio/bandpassed/mid300_8k/piece_06/fluidsynth.wav"
+      },
+      {
+        "excerpt": "piece_17",
+        "bw_label": "Mid-range 300\u20138 kHz",
+        "bw_tag": "mid300_8k",
+        "x_condition": "generated",
+        "audio_A": "https://ejkennedy.github.io/piano-eval-audio/audio/bandpassed/mid300_8k/piece_17/fluidsynth.wav",
+        "audio_B": "https://ejkennedy.github.io/piano-eval-audio/audio/bandpassed/mid300_8k/piece_17/generated.wav",
+        "audio_C": "https://ejkennedy.github.io/piano-eval-audio/audio/bandpassed/mid300_8k/piece_17/original.wav",
+        "audio_X": "https://ejkennedy.github.io/piano-eval-audio/audio/bandpassed/mid300_8k/piece_17/generated.wav"
+      },
+      {
+        "excerpt": "piece_28",
+        "bw_label": "Mid-range 300\u20138 kHz",
+        "bw_tag": "mid300_8k",
+        "x_condition": "generated",
+        "audio_A": "https://ejkennedy.github.io/piano-eval-audio/audio/bandpassed/mid300_8k/piece_28/fluidsynth.wav",
+        "audio_B": "https://ejkennedy.github.io/piano-eval-audio/audio/bandpassed/mid300_8k/piece_28/generated.wav",
+        "audio_C": "https://ejkennedy.github.io/piano-eval-audio/audio/bandpassed/mid300_8k/piece_28/original.wav",
+        "audio_X": "https://ejkennedy.github.io/piano-eval-audio/audio/bandpassed/mid300_8k/piece_28/generated.wav"
+      },
+      {
+        "excerpt": "piece_28",
+        "bw_label": "Mid-range 300\u20138 kHz",
+        "bw_tag": "mid300_8k",
+        "x_condition": "fluidsynth",
+        "audio_A": "https://ejkennedy.github.io/piano-eval-audio/audio/bandpassed/mid300_8k/piece_28/fluidsynth.wav",
+        "audio_B": "https://ejkennedy.github.io/piano-eval-audio/audio/bandpassed/mid300_8k/piece_28/generated.wav",
+        "audio_C": "https://ejkennedy.github.io/piano-eval-audio/audio/bandpassed/mid300_8k/piece_28/original.wav",
+        "audio_X": "https://ejkennedy.github.io/piano-eval-audio/audio/bandpassed/mid300_8k/piece_28/fluidsynth.wav"
+      },
+      {
         "excerpt": "piece_13",
         "bw_label": "Mid-range 300\u20138 kHz",
         "bw_tag": "mid300_8k",
@@ -370,14 +350,34 @@ const allBlocks = [
         "audio_X": "https://ejkennedy.github.io/piano-eval-audio/audio/bandpassed/mid300_8k/piece_13/generated.wav"
       },
       {
-        "excerpt": "piece_13",
+        "excerpt": "piece_25",
+        "bw_label": "Mid-range 300\u20138 kHz",
+        "bw_tag": "mid300_8k",
+        "x_condition": "original",
+        "audio_A": "https://ejkennedy.github.io/piano-eval-audio/audio/bandpassed/mid300_8k/piece_25/fluidsynth.wav",
+        "audio_B": "https://ejkennedy.github.io/piano-eval-audio/audio/bandpassed/mid300_8k/piece_25/generated.wav",
+        "audio_C": "https://ejkennedy.github.io/piano-eval-audio/audio/bandpassed/mid300_8k/piece_25/original.wav",
+        "audio_X": "https://ejkennedy.github.io/piano-eval-audio/audio/bandpassed/mid300_8k/piece_25/original.wav"
+      },
+      {
+        "excerpt": "piece_17",
+        "bw_label": "Mid-range 300\u20138 kHz",
+        "bw_tag": "mid300_8k",
+        "x_condition": "original",
+        "audio_A": "https://ejkennedy.github.io/piano-eval-audio/audio/bandpassed/mid300_8k/piece_17/fluidsynth.wav",
+        "audio_B": "https://ejkennedy.github.io/piano-eval-audio/audio/bandpassed/mid300_8k/piece_17/generated.wav",
+        "audio_C": "https://ejkennedy.github.io/piano-eval-audio/audio/bandpassed/mid300_8k/piece_17/original.wav",
+        "audio_X": "https://ejkennedy.github.io/piano-eval-audio/audio/bandpassed/mid300_8k/piece_17/original.wav"
+      },
+      {
+        "excerpt": "piece_25",
         "bw_label": "Mid-range 300\u20138 kHz",
         "bw_tag": "mid300_8k",
         "x_condition": "fluidsynth",
-        "audio_A": "https://ejkennedy.github.io/piano-eval-audio/audio/bandpassed/mid300_8k/piece_13/fluidsynth.wav",
-        "audio_B": "https://ejkennedy.github.io/piano-eval-audio/audio/bandpassed/mid300_8k/piece_13/generated.wav",
-        "audio_C": "https://ejkennedy.github.io/piano-eval-audio/audio/bandpassed/mid300_8k/piece_13/original.wav",
-        "audio_X": "https://ejkennedy.github.io/piano-eval-audio/audio/bandpassed/mid300_8k/piece_13/fluidsynth.wav"
+        "audio_A": "https://ejkennedy.github.io/piano-eval-audio/audio/bandpassed/mid300_8k/piece_25/fluidsynth.wav",
+        "audio_B": "https://ejkennedy.github.io/piano-eval-audio/audio/bandpassed/mid300_8k/piece_25/generated.wav",
+        "audio_C": "https://ejkennedy.github.io/piano-eval-audio/audio/bandpassed/mid300_8k/piece_25/original.wav",
+        "audio_X": "https://ejkennedy.github.io/piano-eval-audio/audio/bandpassed/mid300_8k/piece_25/fluidsynth.wav"
       }
     ]
   }
