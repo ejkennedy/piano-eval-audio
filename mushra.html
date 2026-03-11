@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Piano Synthesis Evaluation — MUSHRA</title>
+<style>
+  *{box-sizing:border-box;}
+  body{font-family:'Helvetica Neue',Arial,sans-serif;max-width:980px;margin:0 auto;padding:24px;color:#222;line-height:1.5;}
+  h1,h2,h3{margin-top:0;}
+  .screen{display:none;} .screen.active{display:block;}
+  .btn{padding:12px 28px;font-size:1em;border-radius:6px;border:none;cursor:pointer;margin:4px;}
+  .btn-primary{background:#1a73e8;color:white;} .btn-primary:hover{background:#1558b0;}
+  .btn-primary:disabled{background:#aaa;cursor:not-allowed;}
+  .btn-secondary{background:white;color:#333;border:2px solid #333;} .btn-secondary:hover{background:#eee;}
+  .practice-badge{display:inline-block;background:#fff3cd;border:1px solid #ffc107;color:#856404;
+    border-radius:4px;padding:3px 10px;font-size:0.85em;margin-bottom:12px;}
+  .ref-bar{background:#e8f5e9;border:1px solid #66bb6a;border-radius:8px;padding:12px 16px;
+    margin:16px 0;display:flex;align-items:center;gap:16px;flex-wrap:wrap;}
+  .ref-bar strong{min-width:110px;}
+  .play-btn{padding:6px 14px;font-size:0.85em;border-radius:4px;border:1px solid #666;
+    background:white;cursor:pointer;white-space:nowrap;}
+  .play-btn:hover{background:#eee;} .play-btn.playing{background:#1a73e8;color:white;border-color:#1a73e8;}
+  table.mushra-tbl{width:100%;border-collapse:collapse;margin:16px 0;}
+  table.mushra-tbl th,table.mushra-tbl td{border:1px solid #ddd;padding:8px;text-align:center;vertical-align:middle;}
+  table.mushra-tbl th{background:#f5f5f5;font-size:0.9em;}
+  table.mushra-tbl td.attr-label{text-align:left;font-size:0.88em;min-width:170px;}
+  input[type=range]{width:100%;cursor:pointer;accent-color:#1a73e8;}
+  .slider-wrap{position:relative;}
+  .slider-labels{display:flex;justify-content:space-between;font-size:0.7em;color:#888;margin-top:2px;}
+  .slider-val{font-weight:bold;color:#1a73e8;font-size:0.9em;}
+  .progress{color:#888;font-size:0.88em;margin-bottom:6px;}
+  .warn{color:#c0392b;font-size:0.88em;margin-top:8px;display:none;}
+  .consent-box{background:#f9f9f9;border:1px solid #ccc;border-radius:8px;padding:20px;margin:16px 0;}
+  .q-group{margin-bottom:20px;} .q-group label{display:block;font-weight:bold;margin-bottom:4px;}
+  .q-group input,.q-group select,.q-group textarea{width:100%;padding:8px;border:1px solid #ccc;
+    border-radius:4px;font-size:0.95em;}
+  .done-box{text-align:center;padding:40px 20px;}
+  .done-box h2{color:#2e7d32;} .csv-btn{font-size:1.1em;padding:14px 36px;}
+</style>
+</head>
+<body>
+
+<!-- ── SCREEN 0: Welcome ─────────────────────────────────────────────────── -->
+<div class="screen active" id="s-welcome">
+  <h1>Piano Synthesis Evaluation</h1>
+  <h2>Part 1 of 3 — Sound Quality Rating (MUSHRA)</h2>
+  <p>Thank you for taking part. This part of the study is for people with <strong>at least 2 years of musical training</strong>.</p>
+  <h3>What you will do</h3>
+  <ul>
+    <li>Listen to short piano excerpts (~10 seconds each)</li>
+    <li>Rate 3 audio conditions across 6 quality attributes using sliders (0–100)</li>
+    <li>Complete <strong>2 practice trial(s)</strong> then <strong>6 rated trials</strong></li>
+    <li>Estimated time: <strong>20–30 minutes</strong></li>
+  </ul>
+  <h3>Equipment</h3>
+  <ul>
+    <li>Use <strong>wired headphones</strong> — Bluetooth headphones are not suitable</li>
+    <li>Disable any EQ or sound enhancement apps</li>
+    <li>Find a quiet space with no interruptions</li>
+    <li>Set a comfortable but clear listening volume before you start</li>
+  </ul>
+  <div class="consent-box">
+    <strong>Consent</strong><br>
+    Your responses are collected anonymously for academic research only.
+    Participation is voluntary and you may stop at any time.
+    <br><br>
+    <label><input type="checkbox" id="consent-chk"> I have read the above and agree to participate</label>
+  </div>
+  <button class="btn btn-primary" id="btn-start" disabled onclick="goToInstructions()">Start →</button>
+  <script>document.getElementById('consent-chk').onchange=function(){
+    document.getElementById('btn-start').disabled=!this.checked;};
+  </script>
+</div>
+
+<!-- ── SCREEN 1: Instructions ────────────────────────────────────────────── -->
+<div class="screen" id="s-instructions">
+  <h2>Instructions</h2>
+  <p>On each page you will see:</p>
+  <ul>
+    <li><strong>Reference</strong> — the original acoustic piano recording (use this as your benchmark)</li>
+    <li><strong>Anchor</strong> — a heavily degraded reference (should score low)</li>
+    <li><strong>Conditions A, B, C</strong> — three different synthesised versions to rate</li>
+  </ul>
+  <p>For each of the <strong>6 quality attributes</strong>, drag the sliders to rate each condition:</p>
+  <ul>
+    <li><strong>0</strong> = worst possible quality for that attribute</li>
+    <li><strong>100</strong> = identical quality to the Reference</li>
+  </ul>
+  <p>You may listen to any recording as many times as you like before submitting.
+     The first 2 page(s) are practice — your answers will not be used.</p>
+  <button class="btn btn-secondary" onclick="showScreen('s-welcome')">← Back</button>
+  <button class="btn btn-primary" onclick="startTrial(0)">Begin practice →</button>
+</div>
+
+<!-- ── SCREEN 2: Trial (built dynamically) ──────────────────────────────── -->
+<div class="screen" id="s-trial">
+  <div class="progress" id="trial-progress"></div>
+  <div id="trial-content"></div>
+  <p class="warn" id="trial-warn">⚠ Please listen to all conditions and move all sliders before continuing.</p>
+  <div style="margin-top:16px;">
+    <button class="btn btn-secondary" id="btn-prev" onclick="prevTrial()">← Previous</button>
+    <button class="btn btn-primary"   id="btn-next" onclick="nextTrial()">Next →</button>
+  </div>
+</div>
+
+<!-- ── SCREEN 3: Questionnaire ──────────────────────────────────────────── -->
+<div class="screen" id="s-questionnaire">
+  <h2>Almost done — a few quick questions</h2>
+  <div class="q-group">
+    <label>How many years of formal music training have you had? *</label>
+    <input type="number" id="q-years" min="0" max="50" placeholder="e.g. 8">
+  </div>
+  <div class="q-group">
+    <label>Primary instrument *</label>
+    <input type="text" id="q-instrument" placeholder="e.g. Piano">
+  </div>
+  <div class="q-group">
+    <label>Headphones used *</label>
+    <input type="text" id="q-headphones" placeholder="e.g. Sennheiser HD 280">
+  </div>
+  <div class="q-group">
+    <label>Age range *</label>
+    <select id="q-age">
+      <option value="">— select —</option>
+      <option>18–24</option><option>25–34</option><option>35–44</option>
+      <option>45–54</option><option>55+</option>
+    </select>
+  </div>
+  <div class="q-group">
+    <label>Any comments about the test?</label>
+    <textarea id="q-comments" rows="3"></textarea>
+  </div>
+  <button class="btn btn-primary" onclick="finishAndDownload()">Finish &amp; Download Results →</button>
+</div>
+
+<!-- ── SCREEN 4: Done ────────────────────────────────────────────────────── -->
+<div class="screen" id="s-done">
+  <div class="done-box">
+    <h2>✓ Thank you!</h2>
+    <p>Your results have been downloaded as a CSV file.</p>
+    <p>Please <strong>email the CSV file</strong> to:<br>
+       <a href="mailto:2664688k@student.gla.ac.uk">2664688k@student.gla.ac.uk</a></p>
+    <p style="margin-top:24px;">When ready, return to the study page and complete <strong>Part 2</strong>.</p>
+    <button class="btn btn-primary csv-btn" onclick="downloadCSV()">Download again</button>
+  </div>
+</div>
+
+<script>
+// ── Data ──────────────────────────────────────────────────────────────────────
+const PAGES = [{"id": "piece_02", "label": "Practice 1", "isPractice": true, "ref": "https://ejkennedy.github.io/piano-eval-audio/audio/clean/piece_02/original.mp3", "anchor": "https://ejkennedy.github.io/piano-eval-audio/audio/anchor/piece_02_anchor.mp3", "conds": {"fluidsynth": "https://ejkennedy.github.io/piano-eval-audio/audio/clean/piece_02/fluidsynth.mp3", "generated": "https://ejkennedy.github.io/piano-eval-audio/audio/clean/piece_02/generated.mp3", "original": "https://ejkennedy.github.io/piano-eval-audio/audio/clean/piece_02/original.mp3"}}, {"id": "piece_03", "label": "Practice 2", "isPractice": true, "ref": "https://ejkennedy.github.io/piano-eval-audio/audio/clean/piece_03/original.mp3", "anchor": "https://ejkennedy.github.io/piano-eval-audio/audio/anchor/piece_03_anchor.mp3", "conds": {"fluidsynth": "https://ejkennedy.github.io/piano-eval-audio/audio/clean/piece_03/fluidsynth.mp3", "generated": "https://ejkennedy.github.io/piano-eval-audio/audio/clean/piece_03/generated.mp3", "original": "https://ejkennedy.github.io/piano-eval-audio/audio/clean/piece_03/original.mp3"}}, {"id": "piece_06", "label": "Excerpt 1", "isPractice": false, "ref": "https://ejkennedy.github.io/piano-eval-audio/audio/clean/piece_06/original.mp3", "anchor": "https://ejkennedy.github.io/piano-eval-audio/audio/anchor/piece_06_anchor.mp3", "conds": {"fluidsynth": "https://ejkennedy.github.io/piano-eval-audio/audio/clean/piece_06/fluidsynth.mp3", "generated": "https://ejkennedy.github.io/piano-eval-audio/audio/clean/piece_06/generated.mp3", "original": "https://ejkennedy.github.io/piano-eval-audio/audio/clean/piece_06/original.mp3"}}, {"id": "piece_08", "label": "Excerpt 2", "isPractice": false, "ref": "https://ejkennedy.github.io/piano-eval-audio/audio/clean/piece_08/original.mp3", "anchor": "https://ejkennedy.github.io/piano-eval-audio/audio/anchor/piece_08_anchor.mp3", "conds": {"fluidsynth": "https://ejkennedy.github.io/piano-eval-audio/audio/clean/piece_08/fluidsynth.mp3", "generated": "https://ejkennedy.github.io/piano-eval-audio/audio/clean/piece_08/generated.mp3", "original": "https://ejkennedy.github.io/piano-eval-audio/audio/clean/piece_08/original.mp3"}}, {"id": "piece_13", "label": "Excerpt 3", "isPractice": false, "ref": "https://ejkennedy.github.io/piano-eval-audio/audio/clean/piece_13/original.mp3", "anchor": "https://ejkennedy.github.io/piano-eval-audio/audio/anchor/piece_13_anchor.mp3", "conds": {"fluidsynth": "https://ejkennedy.github.io/piano-eval-audio/audio/clean/piece_13/fluidsynth.mp3", "generated": "https://ejkennedy.github.io/piano-eval-audio/audio/clean/piece_13/generated.mp3", "original": "https://ejkennedy.github.io/piano-eval-audio/audio/clean/piece_13/original.mp3"}}, {"id": "piece_17", "label": "Excerpt 4", "isPractice": false, "ref": "https://ejkennedy.github.io/piano-eval-audio/audio/clean/piece_17/original.mp3", "anchor": "https://ejkennedy.github.io/piano-eval-audio/audio/anchor/piece_17_anchor.mp3", "conds": {"fluidsynth": "https://ejkennedy.github.io/piano-eval-audio/audio/clean/piece_17/fluidsynth.mp3", "generated": "https://ejkennedy.github.io/piano-eval-audio/audio/clean/piece_17/generated.mp3", "original": "https://ejkennedy.github.io/piano-eval-audio/audio/clean/piece_17/original.mp3"}}, {"id": "piece_25", "label": "Excerpt 5", "isPractice": false, "ref": "https://ejkennedy.github.io/piano-eval-audio/audio/clean/piece_25/original.mp3", "anchor": "https://ejkennedy.github.io/piano-eval-audio/audio/anchor/piece_25_anchor.mp3", "conds": {"fluidsynth": "https://ejkennedy.github.io/piano-eval-audio/audio/clean/piece_25/fluidsynth.mp3", "generated": "https://ejkennedy.github.io/piano-eval-audio/audio/clean/piece_25/generated.mp3", "original": "https://ejkennedy.github.io/piano-eval-audio/audio/clean/piece_25/original.mp3"}}, {"id": "piece_28", "label": "Excerpt 6", "isPractice": false, "ref": "https://ejkennedy.github.io/piano-eval-audio/audio/clean/piece_28/original.mp3", "anchor": "https://ejkennedy.github.io/piano-eval-audio/audio/anchor/piece_28_anchor.mp3", "conds": {"fluidsynth": "https://ejkennedy.github.io/piano-eval-audio/audio/clean/piece_28/fluidsynth.mp3", "generated": "https://ejkennedy.github.io/piano-eval-audio/audio/clean/piece_28/generated.mp3", "original": "https://ejkennedy.github.io/piano-eval-audio/audio/clean/piece_28/original.mp3"}}];
+const ATTRS = [["Naturalness / Timbral Realism", "Very unnatural", "Completely natural"], ["Attack / Transient Quality", "Dull / smeared", "Crisp and accurate"], ["Harmonic Richness", "Thin / hollow", "Full and resonant"], ["Dynamic Expression", "Flat / lifeless", "Highly expressive"], ["Spatial Quality / Resonance", "Dry / no depth", "Natural room presence"], ["Overall Preference", "Strongly dislike", "Strongly prefer"]];
+const COND_NAMES = ["fluidsynth", "generated", "original"];
+
+let currentTrial = 0;
+let trialData = []; // one entry per page
+let csvCache = "";
+
+// ── Helpers ───────────────────────────────────────────────────────────────────
+function showScreen(id) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  window.scrollTo(0, 0);
+}
+function goToInstructions() { showScreen('s-instructions'); }
+
+function shuffle(arr) {
+  const a = [...arr];
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
+
+// ── Audio ──────────────────────────────────────────────────────────────────────
+let currentAudio = null;
+function playAudio(url, btnId) {
+  if (currentAudio) { currentAudio.pause(); currentAudio.currentTime = 0; }
+  document.querySelectorAll('.play-btn').forEach(b => b.classList.remove('playing'));
+  const audio = new Audio(url);
+  currentAudio = audio;
+  document.getElementById(btnId).classList.add('playing');
+  audio.play();
+  audio.onended = () => {
+    document.getElementById(btnId).classList.remove('playing');
+    // Mark this condition as heard
+    const btn = document.getElementById(btnId);
+    if (btn) btn.dataset.heard = "1";
+  };
+}
+
+// ── Trial rendering ────────────────────────────────────────────────────────────
+function startTrial(idx) {
+  currentTrial = idx;
+  renderTrial(idx);
+  showScreen('s-trial');
+}
+
+function renderTrial(idx) {
+  const page = PAGES[idx];
+  const labelsShuffled = shuffle(["A", "B", "C"]);
+  const condsShuffled  = shuffle([...COND_NAMES]);
+  const labelMap = {};  // label → condition
+  labelsShuffled.forEach((lbl, i) => { labelMap[lbl] = condsShuffled[i]; });
+
+  // Initialise storage for this trial
+  trialData[idx] = {
+    page_id: page.id, label: page.label, isPractice: page.isPractice,
+    labelMap,
+    ratings: { A: {}, B: {}, C: {}, Anchor: {} }
+  };
+
+  // Defaults all sliders to 50
+  ATTRS.forEach(([name]) => {
+    ["A","B","C","Anchor"].forEach(lbl => { trialData[idx].ratings[lbl][name] = 50; });
+  });
+
+  const total = PAGES.length;
+  document.getElementById('trial-progress').textContent =
+    `Trial ${idx + 1} of ${total}`;
+  document.getElementById('btn-prev').style.visibility = idx === 0 ? 'hidden' : 'visible';
+  document.getElementById('btn-next').textContent = idx === total - 1 ? 'Finish →' : 'Next →';
+  document.getElementById('trial-warn').style.display = 'none';
+
+  let html = '';
+  if (page.isPractice) html += `<span class="practice-badge">Practice trial — not counted</span>`;
+  html += `<h2>${page.label}</h2>`;
+  html += `<p>Listen to the Reference, then rate Conditions A, B, C and Anchor on each attribute.</p>`;
+
+  // Reference + Anchor bar
+  html += `<div class="ref-bar">
+    <strong>Reference (original):</strong>
+    <button class="play-btn" id="btn-ref-${idx}" data-heard="0"
+      onclick="playAudio('${page.ref}','btn-ref-${idx}')">▶ Play Reference</button>
+    <strong style="margin-left:16px;">Anchor (degraded):</strong>
+    <button class="play-btn" id="btn-anc-${idx}" data-heard="0"
+      onclick="playAudio('${page.anchor}','btn-anc-${idx}')">▶ Play Anchor</button>
+  </div>`;
+
+  // Condition table
+  html += `<table class="mushra-tbl"><thead><tr>
+    <th style="min-width:170px;">Attribute</th>`;
+  ["A","B","C","Anchor"].forEach(lbl => {
+    const url = lbl === "Anchor" ? page.anchor : page.conds[labelMap[lbl]];
+    html += `<th>Condition ${lbl}<br>
+      <button class="play-btn" id="btn-${lbl}-${idx}" data-heard="0"
+        onclick="playAudio('${url}','btn-${lbl}-${idx}')">▶ Play ${lbl}</button>
+    </th>`;
+  });
+  html += `</tr></thead><tbody>`;
+
+  ATTRS.forEach(([name, lo, hi], ai) => {
+    html += `<tr><td class="attr-label"><strong>${name}</strong><br>
+      <span style="font-size:0.75em;color:#888;">0=${lo}, 100=${hi}</span></td>`;
+    ["A","B","C","Anchor"].forEach(lbl => {
+      html += `<td><div class="slider-wrap">
+        <input type="range" min="0" max="100" value="50"
+          id="sl-${lbl}-${ai}-${idx}"
+          oninput="updateRating(${idx},'${lbl}','${name}',this.value,this.id)">
+        <div style="text-align:center;">
+          <span class="slider-val" id="sv-${lbl}-${ai}-${idx}">50</span>
+        </div>
+        <div class="slider-labels"><span>0</span><span>100</span></div>
+      </div></td>`;
+    });
+    html += `</tr>`;
+  });
+  html += `</tbody></table>`;
+
+  document.getElementById('trial-content').innerHTML = html;
+}
+
+function updateRating(trialIdx, label, attrName, value, sliderId) {
+  trialData[trialIdx].ratings[label][attrName] = parseInt(value);
+  const valId = sliderId.replace('sl-', 'sv-');
+  document.getElementById(valId).textContent = value;
+}
+
+function nextTrial() {
+  document.getElementById('trial-warn').style.display = 'none';
+  if (currentTrial < PAGES.length - 1) {
+    currentTrial++;
+    renderTrial(currentTrial);
+    window.scrollTo(0, 0);
+  } else {
+    showScreen('s-questionnaire');
+  }
+}
+
+function prevTrial() {
+  if (currentTrial > 0) {
+    currentTrial--;
+    renderTrial(currentTrial);
+    window.scrollTo(0, 0);
+  }
+}
+
+// ── Export ────────────────────────────────────────────────────────────────────
+function finishAndDownload() {
+  const years      = document.getElementById('q-years').value;
+  const instrument = document.getElementById('q-instrument').value;
+  const headphones = document.getElementById('q-headphones').value;
+  const age        = document.getElementById('q-age').value;
+  const comments   = document.getElementById('q-comments').value.replace(/"/g, '""');
+
+  const rows = ["participant_years_training,participant_instrument,participant_headphones,"
+    + "participant_age,page_id,page_label,is_practice,label,condition,attribute,rating,comments"];
+
+  trialData.forEach(td => {
+    ["A","B","C","Anchor"].forEach(lbl => {
+      const cond = lbl === "Anchor" ? "anchor" : td.labelMap[lbl];
+      ATTRS.forEach(([name]) => {
+        const rating = td.ratings[lbl][name] ?? "";
+        rows.push(`${years},${instrument},${headphones},${age},"${td.page_id}",`
+          + `"${td.label}",${td.isPractice},${lbl},${cond},"${name}",${rating},"${comments}"`);
+      });
+    });
+  });
+
+  csvCache = rows.join("\n");
+  downloadCSV();
+  showScreen('s-done');
+}
+
+function downloadCSV() {
+  const blob = new Blob([csvCache], {type: "text/csv"});
+  const a = document.createElement("a");
+  a.href = URL.createObjectURL(blob);
+  a.download = "mushra_results_" + Date.now() + ".csv";
+  a.click();
+}
+</script>
+</body>
+</html>

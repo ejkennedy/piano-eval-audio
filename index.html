@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Piano Synthesis Evaluation — Participant Portal</title>
+<style>
+  *{box-sizing:border-box;}
+  body{font-family:'Helvetica Neue',Arial,sans-serif;max-width:760px;margin:0 auto;
+    padding:32px 24px;color:#222;line-height:1.6;background:#fafafa;}
+  h1{font-size:1.6em;margin-bottom:4px;}
+  .subtitle{color:#555;margin-bottom:32px;}
+  .card{background:white;border:1px solid #ddd;border-radius:10px;padding:24px;
+    margin-bottom:20px;box-shadow:0 1px 4px rgba(0,0,0,0.06);}
+  .card h2{margin:0 0 6px;font-size:1.15em;display:flex;align-items:center;gap:10px;}
+  .badge{display:inline-block;background:#1a73e8;color:white;border-radius:20px;
+    padding:2px 10px;font-size:0.8em;font-weight:normal;}
+  .badge.done{background:#2e7d32;}
+  .card p{margin:6px 0 14px;color:#444;font-size:0.95em;}
+  .card .meta{font-size:0.85em;color:#777;margin-bottom:14px;}
+  .start-btn{display:inline-block;background:#1a73e8;color:white;padding:10px 24px;
+    border-radius:6px;text-decoration:none;font-size:0.95em;}
+  .start-btn:hover{background:#1558b0;}
+  .start-btn.disabled{background:#aaa;pointer-events:none;}
+  .instructions{background:#e8f5e9;border:1px solid #a5d6a7;border-radius:8px;
+    padding:16px 20px;margin-bottom:28px;}
+  .instructions h3{margin:0 0 8px;color:#2e7d32;}
+  .step-num{display:inline-block;background:#1a73e8;color:white;border-radius:50%;
+    width:24px;height:24px;text-align:center;line-height:24px;font-size:0.85em;
+    font-weight:bold;margin-right:8px;flex-shrink:0;}
+  .step{display:flex;align-items:flex-start;margin-bottom:10px;}
+  .step p{margin:0;font-size:0.93em;}
+  .email-box{background:#fff3cd;border:1px solid #ffc107;border-radius:8px;
+    padding:16px 20px;margin-top:28px;text-align:center;}
+  .email-box a{color:#1a73e8;font-weight:bold;font-size:1.05em;}
+  footer{text-align:center;color:#aaa;font-size:0.8em;margin-top:40px;}
+</style>
+</head>
+<body>
+<h1>Piano Synthesis Evaluation</h1>
+<p class="subtitle">Listening Evaluation — Participant Portal</p>
+
+<div class="instructions">
+  <h3>Before you begin</h3>
+  <div class="step"><span class="step-num">1</span>
+    <p>Put on your <strong>wired headphones</strong> (Bluetooth is not suitable).
+       Disable any EQ or sound-enhancement apps.</p></div>
+  <div class="step"><span class="step-num">2</span>
+    <p>Find a <strong>quiet room</strong> with no interruptions. The full study takes about <strong>45–60 minutes</strong>.</p></div>
+  <div class="step"><span class="step-num">3</span>
+    <p>Complete the three tests below <strong>in order</strong>. Each test ends with an automatic
+       CSV file download — please keep these files safe.</p></div>
+  <div class="step"><span class="step-num">4</span>
+    <p>After finishing all three tests, <strong>email your three CSV files</strong> to the address at the bottom of this page.</p></div>
+</div>
+
+<!-- Test 1: MUSHRA -->
+<div class="card">
+  <h2><span class="step-num">1</span> Sound Quality Rating
+    <span class="badge">For musical participants</span></h2>
+  <p>Rate three piano audio conditions across six quality attributes.
+     Requires <strong>at least 2 years of music training</strong>.</p>
+  <div class="meta">⏱ ~20–30 min &nbsp;|&nbsp; 8 trials
+    (2 practice, 6 rated)</div>
+  <a href="mushra.html" target="_blank" class="start-btn">Open Test 1 →</a>
+</div>
+
+<!-- Test 2: ABCX Noise -->
+<div class="card">
+  <h2><span class="step-num">2</span> Noise Threshold Test</h2>
+  <p>Identify which mystery recording (X) matches one of the labelled examples (A, B or C).
+     Background noise is gradually added across blocks.</p>
+  <div class="meta">⏱ ~15–20 min &nbsp;|&nbsp; 75 trials
+    (5 blocks: clean + 4 noise levels)</div>
+  <a href="abcx_experiment.html" target="_blank" class="start-btn">Open Test 2 →</a>
+</div>
+
+<!-- Test 3: ABCX Bandwidth -->
+<div class="card">
+  <h2><span class="step-num">3</span> Bandwidth Discrimination Test</h2>
+  <p>Identify which mystery recording (X) matches one of the labelled examples (A, B or C).
+     The audio bandwidth is narrowed across blocks.</p>
+  <div class="meta">⏱ ~10–15 min &nbsp;|&nbsp; 30 trials
+    (3 blocks: full bandwidth, low-pass 2 kHz, mid-range 300–8 kHz)</div>
+  <a href="abx_experiment.html" target="_blank" class="start-btn">Open Test 3 →</a>
+</div>
+
+<div class="email-box">
+  <p>When you have completed all three tests and have your three CSV files,
+     please email them to:</p>
+  <a href="mailto:2664688k@student.gla.ac.uk">2664688k@student.gla.ac.uk</a>
+  <p style="font-size:0.85em;color:#666;margin-top:8px;">
+    Subject: <em>Piano Synthesis Study — Results</em></p>
+</div>
+
+<footer>
+  Piano Synthesis Evaluation &nbsp;|&nbsp; Thank you for your participation.
+</footer>
+</body>
+</html>
