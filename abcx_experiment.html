@@ -60,9 +60,27 @@
 </head>
 <body>
 <script>
-let csvCache = "";
+// ── Manual data collection (more reliable than jsPsych's data system) ─────────
+const results = [];
+const questionnaire = {};
+
+function buildCSV() {
+  const hdr = "music_years,headphones,comments,excerpt,snr_tag,x_condition," +
+              "response_label,chose_condition,correct,rt_ms,gan_as_real,fluid_as_real";
+  const rows = results.map(r => [
+    questionnaire.music_years || "",
+    '"' + (questionnaire.headphones || "").replace(/"/g,'""') + '"',
+    '"' + (questionnaire.comments  || "").replace(/"/g,'""') + '"',
+    r.excerpt, r.snr_tag, r.x_condition,
+    r.response_label, r.chose_condition, r.correct,
+    r.rt, r.gan_as_real, r.fluid_as_real
+  ].join(","));
+  return [hdr, ...rows].join("\n");
+}
+
 function downloadCSV() {
-  const blob = new Blob([csvCache], {type: "text/csv"});
+  const csv = buildCSV();
+  const blob = new Blob([csv], {type: "text/csv"});
   const a = document.createElement("a");
   document.body.appendChild(a);
   a.href = URL.createObjectURL(blob);
@@ -71,13 +89,7 @@ function downloadCSV() {
   document.body.removeChild(a);
 }
 
-const jsPsych = initJsPsych({
-  on_finish: function() {
-    csvCache = jsPsych.data.get().csv();
-    downloadCSV();
-  }
-});
-
+const jsPsych = initJsPsych({});
 const allBlocks = [
   {
     "block": {
@@ -86,6 +98,56 @@ const allBlocks = [
       "snr_tag": "clean"
     },
     "trials": [
+      {
+        "excerpt": "piece_17",
+        "snr_label": "Clean (no noise)",
+        "snr_tag": "clean",
+        "x_condition": "original",
+        "audio_A": "https://ejkennedy.github.io/piano-eval-audio/audio/clean/piece_17/fluidsynth.mp3",
+        "audio_B": "https://ejkennedy.github.io/piano-eval-audio/audio/clean/piece_17/generated.mp3",
+        "audio_C": "https://ejkennedy.github.io/piano-eval-audio/audio/clean/piece_17/original.mp3",
+        "audio_X": "https://ejkennedy.github.io/piano-eval-audio/audio/clean/piece_17/original.mp3"
+      },
+      {
+        "excerpt": "piece_28",
+        "snr_label": "Clean (no noise)",
+        "snr_tag": "clean",
+        "x_condition": "generated",
+        "audio_A": "https://ejkennedy.github.io/piano-eval-audio/audio/clean/piece_28/fluidsynth.mp3",
+        "audio_B": "https://ejkennedy.github.io/piano-eval-audio/audio/clean/piece_28/generated.mp3",
+        "audio_C": "https://ejkennedy.github.io/piano-eval-audio/audio/clean/piece_28/original.mp3",
+        "audio_X": "https://ejkennedy.github.io/piano-eval-audio/audio/clean/piece_28/generated.mp3"
+      },
+      {
+        "excerpt": "piece_13",
+        "snr_label": "Clean (no noise)",
+        "snr_tag": "clean",
+        "x_condition": "generated",
+        "audio_A": "https://ejkennedy.github.io/piano-eval-audio/audio/clean/piece_13/fluidsynth.mp3",
+        "audio_B": "https://ejkennedy.github.io/piano-eval-audio/audio/clean/piece_13/generated.mp3",
+        "audio_C": "https://ejkennedy.github.io/piano-eval-audio/audio/clean/piece_13/original.mp3",
+        "audio_X": "https://ejkennedy.github.io/piano-eval-audio/audio/clean/piece_13/generated.mp3"
+      },
+      {
+        "excerpt": "piece_13",
+        "snr_label": "Clean (no noise)",
+        "snr_tag": "clean",
+        "x_condition": "fluidsynth",
+        "audio_A": "https://ejkennedy.github.io/piano-eval-audio/audio/clean/piece_13/fluidsynth.mp3",
+        "audio_B": "https://ejkennedy.github.io/piano-eval-audio/audio/clean/piece_13/generated.mp3",
+        "audio_C": "https://ejkennedy.github.io/piano-eval-audio/audio/clean/piece_13/original.mp3",
+        "audio_X": "https://ejkennedy.github.io/piano-eval-audio/audio/clean/piece_13/fluidsynth.mp3"
+      },
+      {
+        "excerpt": "piece_06",
+        "snr_label": "Clean (no noise)",
+        "snr_tag": "clean",
+        "x_condition": "generated",
+        "audio_A": "https://ejkennedy.github.io/piano-eval-audio/audio/clean/piece_06/fluidsynth.mp3",
+        "audio_B": "https://ejkennedy.github.io/piano-eval-audio/audio/clean/piece_06/generated.mp3",
+        "audio_C": "https://ejkennedy.github.io/piano-eval-audio/audio/clean/piece_06/original.mp3",
+        "audio_X": "https://ejkennedy.github.io/piano-eval-audio/audio/clean/piece_06/generated.mp3"
+      },
       {
         "excerpt": "piece_25",
         "snr_label": "Clean (no noise)",
@@ -100,31 +162,11 @@ const allBlocks = [
         "excerpt": "piece_17",
         "snr_label": "Clean (no noise)",
         "snr_tag": "clean",
-        "x_condition": "original",
-        "audio_A": "https://ejkennedy.github.io/piano-eval-audio/audio/clean/piece_17/fluidsynth.mp3",
-        "audio_B": "https://ejkennedy.github.io/piano-eval-audio/audio/clean/piece_17/generated.mp3",
-        "audio_C": "https://ejkennedy.github.io/piano-eval-audio/audio/clean/piece_17/original.mp3",
-        "audio_X": "https://ejkennedy.github.io/piano-eval-audio/audio/clean/piece_17/original.mp3"
-      },
-      {
-        "excerpt": "piece_17",
-        "snr_label": "Clean (no noise)",
-        "snr_tag": "clean",
         "x_condition": "fluidsynth",
         "audio_A": "https://ejkennedy.github.io/piano-eval-audio/audio/clean/piece_17/fluidsynth.mp3",
         "audio_B": "https://ejkennedy.github.io/piano-eval-audio/audio/clean/piece_17/generated.mp3",
         "audio_C": "https://ejkennedy.github.io/piano-eval-audio/audio/clean/piece_17/original.mp3",
         "audio_X": "https://ejkennedy.github.io/piano-eval-audio/audio/clean/piece_17/fluidsynth.mp3"
-      },
-      {
-        "excerpt": "piece_28",
-        "snr_label": "Clean (no noise)",
-        "snr_tag": "clean",
-        "x_condition": "fluidsynth",
-        "audio_A": "https://ejkennedy.github.io/piano-eval-audio/audio/clean/piece_28/fluidsynth.mp3",
-        "audio_B": "https://ejkennedy.github.io/piano-eval-audio/audio/clean/piece_28/generated.mp3",
-        "audio_C": "https://ejkennedy.github.io/piano-eval-audio/audio/clean/piece_28/original.mp3",
-        "audio_X": "https://ejkennedy.github.io/piano-eval-audio/audio/clean/piece_28/fluidsynth.mp3"
       },
       {
         "excerpt": "piece_13",
@@ -137,14 +179,14 @@ const allBlocks = [
         "audio_X": "https://ejkennedy.github.io/piano-eval-audio/audio/clean/piece_13/original.mp3"
       },
       {
-        "excerpt": "piece_06",
+        "excerpt": "piece_28",
         "snr_label": "Clean (no noise)",
         "snr_tag": "clean",
-        "x_condition": "original",
-        "audio_A": "https://ejkennedy.github.io/piano-eval-audio/audio/clean/piece_06/fluidsynth.mp3",
-        "audio_B": "https://ejkennedy.github.io/piano-eval-audio/audio/clean/piece_06/generated.mp3",
-        "audio_C": "https://ejkennedy.github.io/piano-eval-audio/audio/clean/piece_06/original.mp3",
-        "audio_X": "https://ejkennedy.github.io/piano-eval-audio/audio/clean/piece_06/original.mp3"
+        "x_condition": "fluidsynth",
+        "audio_A": "https://ejkennedy.github.io/piano-eval-audio/audio/clean/piece_28/fluidsynth.mp3",
+        "audio_B": "https://ejkennedy.github.io/piano-eval-audio/audio/clean/piece_28/generated.mp3",
+        "audio_C": "https://ejkennedy.github.io/piano-eval-audio/audio/clean/piece_28/original.mp3",
+        "audio_X": "https://ejkennedy.github.io/piano-eval-audio/audio/clean/piece_28/fluidsynth.mp3"
       },
       {
         "excerpt": "piece_25",
@@ -167,44 +209,14 @@ const allBlocks = [
         "audio_X": "https://ejkennedy.github.io/piano-eval-audio/audio/clean/piece_17/generated.mp3"
       },
       {
-        "excerpt": "piece_25",
-        "snr_label": "Clean (no noise)",
-        "snr_tag": "clean",
-        "x_condition": "original",
-        "audio_A": "https://ejkennedy.github.io/piano-eval-audio/audio/clean/piece_25/fluidsynth.mp3",
-        "audio_B": "https://ejkennedy.github.io/piano-eval-audio/audio/clean/piece_25/generated.mp3",
-        "audio_C": "https://ejkennedy.github.io/piano-eval-audio/audio/clean/piece_25/original.mp3",
-        "audio_X": "https://ejkennedy.github.io/piano-eval-audio/audio/clean/piece_25/original.mp3"
-      },
-      {
-        "excerpt": "piece_13",
-        "snr_label": "Clean (no noise)",
-        "snr_tag": "clean",
-        "x_condition": "generated",
-        "audio_A": "https://ejkennedy.github.io/piano-eval-audio/audio/clean/piece_13/fluidsynth.mp3",
-        "audio_B": "https://ejkennedy.github.io/piano-eval-audio/audio/clean/piece_13/generated.mp3",
-        "audio_C": "https://ejkennedy.github.io/piano-eval-audio/audio/clean/piece_13/original.mp3",
-        "audio_X": "https://ejkennedy.github.io/piano-eval-audio/audio/clean/piece_13/generated.mp3"
-      },
-      {
         "excerpt": "piece_06",
         "snr_label": "Clean (no noise)",
         "snr_tag": "clean",
-        "x_condition": "generated",
+        "x_condition": "original",
         "audio_A": "https://ejkennedy.github.io/piano-eval-audio/audio/clean/piece_06/fluidsynth.mp3",
         "audio_B": "https://ejkennedy.github.io/piano-eval-audio/audio/clean/piece_06/generated.mp3",
         "audio_C": "https://ejkennedy.github.io/piano-eval-audio/audio/clean/piece_06/original.mp3",
-        "audio_X": "https://ejkennedy.github.io/piano-eval-audio/audio/clean/piece_06/generated.mp3"
-      },
-      {
-        "excerpt": "piece_13",
-        "snr_label": "Clean (no noise)",
-        "snr_tag": "clean",
-        "x_condition": "fluidsynth",
-        "audio_A": "https://ejkennedy.github.io/piano-eval-audio/audio/clean/piece_13/fluidsynth.mp3",
-        "audio_B": "https://ejkennedy.github.io/piano-eval-audio/audio/clean/piece_13/generated.mp3",
-        "audio_C": "https://ejkennedy.github.io/piano-eval-audio/audio/clean/piece_13/original.mp3",
-        "audio_X": "https://ejkennedy.github.io/piano-eval-audio/audio/clean/piece_13/fluidsynth.mp3"
+        "audio_X": "https://ejkennedy.github.io/piano-eval-audio/audio/clean/piece_06/original.mp3"
       },
       {
         "excerpt": "piece_28",
@@ -217,16 +229,6 @@ const allBlocks = [
         "audio_X": "https://ejkennedy.github.io/piano-eval-audio/audio/clean/piece_28/original.mp3"
       },
       {
-        "excerpt": "piece_28",
-        "snr_label": "Clean (no noise)",
-        "snr_tag": "clean",
-        "x_condition": "generated",
-        "audio_A": "https://ejkennedy.github.io/piano-eval-audio/audio/clean/piece_28/fluidsynth.mp3",
-        "audio_B": "https://ejkennedy.github.io/piano-eval-audio/audio/clean/piece_28/generated.mp3",
-        "audio_C": "https://ejkennedy.github.io/piano-eval-audio/audio/clean/piece_28/original.mp3",
-        "audio_X": "https://ejkennedy.github.io/piano-eval-audio/audio/clean/piece_28/generated.mp3"
-      },
-      {
         "excerpt": "piece_06",
         "snr_label": "Clean (no noise)",
         "snr_tag": "clean",
@@ -235,6 +237,16 @@ const allBlocks = [
         "audio_B": "https://ejkennedy.github.io/piano-eval-audio/audio/clean/piece_06/generated.mp3",
         "audio_C": "https://ejkennedy.github.io/piano-eval-audio/audio/clean/piece_06/original.mp3",
         "audio_X": "https://ejkennedy.github.io/piano-eval-audio/audio/clean/piece_06/fluidsynth.mp3"
+      },
+      {
+        "excerpt": "piece_25",
+        "snr_label": "Clean (no noise)",
+        "snr_tag": "clean",
+        "x_condition": "original",
+        "audio_A": "https://ejkennedy.github.io/piano-eval-audio/audio/clean/piece_25/fluidsynth.mp3",
+        "audio_B": "https://ejkennedy.github.io/piano-eval-audio/audio/clean/piece_25/generated.mp3",
+        "audio_C": "https://ejkennedy.github.io/piano-eval-audio/audio/clean/piece_25/original.mp3",
+        "audio_X": "https://ejkennedy.github.io/piano-eval-audio/audio/clean/piece_25/original.mp3"
       }
     ]
   },
@@ -246,14 +258,14 @@ const allBlocks = [
     },
     "trials": [
       {
-        "excerpt": "piece_13",
+        "excerpt": "piece_25",
         "snr_label": "Noise level (30 dB SNR)",
         "snr_tag": "snr30",
-        "x_condition": "original",
-        "audio_A": "https://ejkennedy.github.io/piano-eval-audio/audio/noised/snr30/piece_13/fluidsynth.mp3",
-        "audio_B": "https://ejkennedy.github.io/piano-eval-audio/audio/noised/snr30/piece_13/generated.mp3",
-        "audio_C": "https://ejkennedy.github.io/piano-eval-audio/audio/noised/snr30/piece_13/original.mp3",
-        "audio_X": "https://ejkennedy.github.io/piano-eval-audio/audio/noised/snr30/piece_13/original.mp3"
+        "x_condition": "generated",
+        "audio_A": "https://ejkennedy.github.io/piano-eval-audio/audio/noised/snr30/piece_25/fluidsynth.mp3",
+        "audio_B": "https://ejkennedy.github.io/piano-eval-audio/audio/noised/snr30/piece_25/generated.mp3",
+        "audio_C": "https://ejkennedy.github.io/piano-eval-audio/audio/noised/snr30/piece_25/original.mp3",
+        "audio_X": "https://ejkennedy.github.io/piano-eval-audio/audio/noised/snr30/piece_25/generated.mp3"
       },
       {
         "excerpt": "piece_25",
@@ -266,16 +278,6 @@ const allBlocks = [
         "audio_X": "https://ejkennedy.github.io/piano-eval-audio/audio/noised/snr30/piece_25/fluidsynth.mp3"
       },
       {
-        "excerpt": "piece_06",
-        "snr_label": "Noise level (30 dB SNR)",
-        "snr_tag": "snr30",
-        "x_condition": "generated",
-        "audio_A": "https://ejkennedy.github.io/piano-eval-audio/audio/noised/snr30/piece_06/fluidsynth.mp3",
-        "audio_B": "https://ejkennedy.github.io/piano-eval-audio/audio/noised/snr30/piece_06/generated.mp3",
-        "audio_C": "https://ejkennedy.github.io/piano-eval-audio/audio/noised/snr30/piece_06/original.mp3",
-        "audio_X": "https://ejkennedy.github.io/piano-eval-audio/audio/noised/snr30/piece_06/generated.mp3"
-      },
-      {
         "excerpt": "piece_13",
         "snr_label": "Noise level (30 dB SNR)",
         "snr_tag": "snr30",
@@ -284,36 +286,6 @@ const allBlocks = [
         "audio_B": "https://ejkennedy.github.io/piano-eval-audio/audio/noised/snr30/piece_13/generated.mp3",
         "audio_C": "https://ejkennedy.github.io/piano-eval-audio/audio/noised/snr30/piece_13/original.mp3",
         "audio_X": "https://ejkennedy.github.io/piano-eval-audio/audio/noised/snr30/piece_13/generated.mp3"
-      },
-      {
-        "excerpt": "piece_13",
-        "snr_label": "Noise level (30 dB SNR)",
-        "snr_tag": "snr30",
-        "x_condition": "fluidsynth",
-        "audio_A": "https://ejkennedy.github.io/piano-eval-audio/audio/noised/snr30/piece_13/fluidsynth.mp3",
-        "audio_B": "https://ejkennedy.github.io/piano-eval-audio/audio/noised/snr30/piece_13/generated.mp3",
-        "audio_C": "https://ejkennedy.github.io/piano-eval-audio/audio/noised/snr30/piece_13/original.mp3",
-        "audio_X": "https://ejkennedy.github.io/piano-eval-audio/audio/noised/snr30/piece_13/fluidsynth.mp3"
-      },
-      {
-        "excerpt": "piece_25",
-        "snr_label": "Noise level (30 dB SNR)",
-        "snr_tag": "snr30",
-        "x_condition": "generated",
-        "audio_A": "https://ejkennedy.github.io/piano-eval-audio/audio/noised/snr30/piece_25/fluidsynth.mp3",
-        "audio_B": "https://ejkennedy.github.io/piano-eval-audio/audio/noised/snr30/piece_25/generated.mp3",
-        "audio_C": "https://ejkennedy.github.io/piano-eval-audio/audio/noised/snr30/piece_25/original.mp3",
-        "audio_X": "https://ejkennedy.github.io/piano-eval-audio/audio/noised/snr30/piece_25/generated.mp3"
-      },
-      {
-        "excerpt": "piece_06",
-        "snr_label": "Noise level (30 dB SNR)",
-        "snr_tag": "snr30",
-        "x_condition": "fluidsynth",
-        "audio_A": "https://ejkennedy.github.io/piano-eval-audio/audio/noised/snr30/piece_06/fluidsynth.mp3",
-        "audio_B": "https://ejkennedy.github.io/piano-eval-audio/audio/noised/snr30/piece_06/generated.mp3",
-        "audio_C": "https://ejkennedy.github.io/piano-eval-audio/audio/noised/snr30/piece_06/original.mp3",
-        "audio_X": "https://ejkennedy.github.io/piano-eval-audio/audio/noised/snr30/piece_06/fluidsynth.mp3"
       },
       {
         "excerpt": "piece_25",
@@ -329,11 +301,11 @@ const allBlocks = [
         "excerpt": "piece_17",
         "snr_label": "Noise level (30 dB SNR)",
         "snr_tag": "snr30",
-        "x_condition": "generated",
+        "x_condition": "original",
         "audio_A": "https://ejkennedy.github.io/piano-eval-audio/audio/noised/snr30/piece_17/fluidsynth.mp3",
         "audio_B": "https://ejkennedy.github.io/piano-eval-audio/audio/noised/snr30/piece_17/generated.mp3",
         "audio_C": "https://ejkennedy.github.io/piano-eval-audio/audio/noised/snr30/piece_17/original.mp3",
-        "audio_X": "https://ejkennedy.github.io/piano-eval-audio/audio/noised/snr30/piece_17/generated.mp3"
+        "audio_X": "https://ejkennedy.github.io/piano-eval-audio/audio/noised/snr30/piece_17/original.mp3"
       },
       {
         "excerpt": "piece_17",
@@ -346,14 +318,14 @@ const allBlocks = [
         "audio_X": "https://ejkennedy.github.io/piano-eval-audio/audio/noised/snr30/piece_17/fluidsynth.mp3"
       },
       {
-        "excerpt": "piece_17",
+        "excerpt": "piece_28",
         "snr_label": "Noise level (30 dB SNR)",
         "snr_tag": "snr30",
-        "x_condition": "original",
-        "audio_A": "https://ejkennedy.github.io/piano-eval-audio/audio/noised/snr30/piece_17/fluidsynth.mp3",
-        "audio_B": "https://ejkennedy.github.io/piano-eval-audio/audio/noised/snr30/piece_17/generated.mp3",
-        "audio_C": "https://ejkennedy.github.io/piano-eval-audio/audio/noised/snr30/piece_17/original.mp3",
-        "audio_X": "https://ejkennedy.github.io/piano-eval-audio/audio/noised/snr30/piece_17/original.mp3"
+        "x_condition": "generated",
+        "audio_A": "https://ejkennedy.github.io/piano-eval-audio/audio/noised/snr30/piece_28/fluidsynth.mp3",
+        "audio_B": "https://ejkennedy.github.io/piano-eval-audio/audio/noised/snr30/piece_28/generated.mp3",
+        "audio_C": "https://ejkennedy.github.io/piano-eval-audio/audio/noised/snr30/piece_28/original.mp3",
+        "audio_X": "https://ejkennedy.github.io/piano-eval-audio/audio/noised/snr30/piece_28/generated.mp3"
       },
       {
         "excerpt": "piece_06",
@@ -366,14 +338,14 @@ const allBlocks = [
         "audio_X": "https://ejkennedy.github.io/piano-eval-audio/audio/noised/snr30/piece_06/original.mp3"
       },
       {
-        "excerpt": "piece_28",
+        "excerpt": "piece_17",
         "snr_label": "Noise level (30 dB SNR)",
         "snr_tag": "snr30",
         "x_condition": "generated",
-        "audio_A": "https://ejkennedy.github.io/piano-eval-audio/audio/noised/snr30/piece_28/fluidsynth.mp3",
-        "audio_B": "https://ejkennedy.github.io/piano-eval-audio/audio/noised/snr30/piece_28/generated.mp3",
-        "audio_C": "https://ejkennedy.github.io/piano-eval-audio/audio/noised/snr30/piece_28/original.mp3",
-        "audio_X": "https://ejkennedy.github.io/piano-eval-audio/audio/noised/snr30/piece_28/generated.mp3"
+        "audio_A": "https://ejkennedy.github.io/piano-eval-audio/audio/noised/snr30/piece_17/fluidsynth.mp3",
+        "audio_B": "https://ejkennedy.github.io/piano-eval-audio/audio/noised/snr30/piece_17/generated.mp3",
+        "audio_C": "https://ejkennedy.github.io/piano-eval-audio/audio/noised/snr30/piece_17/original.mp3",
+        "audio_X": "https://ejkennedy.github.io/piano-eval-audio/audio/noised/snr30/piece_17/generated.mp3"
       },
       {
         "excerpt": "piece_28",
@@ -384,6 +356,46 @@ const allBlocks = [
         "audio_B": "https://ejkennedy.github.io/piano-eval-audio/audio/noised/snr30/piece_28/generated.mp3",
         "audio_C": "https://ejkennedy.github.io/piano-eval-audio/audio/noised/snr30/piece_28/original.mp3",
         "audio_X": "https://ejkennedy.github.io/piano-eval-audio/audio/noised/snr30/piece_28/fluidsynth.mp3"
+      },
+      {
+        "excerpt": "piece_13",
+        "snr_label": "Noise level (30 dB SNR)",
+        "snr_tag": "snr30",
+        "x_condition": "fluidsynth",
+        "audio_A": "https://ejkennedy.github.io/piano-eval-audio/audio/noised/snr30/piece_13/fluidsynth.mp3",
+        "audio_B": "https://ejkennedy.github.io/piano-eval-audio/audio/noised/snr30/piece_13/generated.mp3",
+        "audio_C": "https://ejkennedy.github.io/piano-eval-audio/audio/noised/snr30/piece_13/original.mp3",
+        "audio_X": "https://ejkennedy.github.io/piano-eval-audio/audio/noised/snr30/piece_13/fluidsynth.mp3"
+      },
+      {
+        "excerpt": "piece_13",
+        "snr_label": "Noise level (30 dB SNR)",
+        "snr_tag": "snr30",
+        "x_condition": "original",
+        "audio_A": "https://ejkennedy.github.io/piano-eval-audio/audio/noised/snr30/piece_13/fluidsynth.mp3",
+        "audio_B": "https://ejkennedy.github.io/piano-eval-audio/audio/noised/snr30/piece_13/generated.mp3",
+        "audio_C": "https://ejkennedy.github.io/piano-eval-audio/audio/noised/snr30/piece_13/original.mp3",
+        "audio_X": "https://ejkennedy.github.io/piano-eval-audio/audio/noised/snr30/piece_13/original.mp3"
+      },
+      {
+        "excerpt": "piece_06",
+        "snr_label": "Noise level (30 dB SNR)",
+        "snr_tag": "snr30",
+        "x_condition": "generated",
+        "audio_A": "https://ejkennedy.github.io/piano-eval-audio/audio/noised/snr30/piece_06/fluidsynth.mp3",
+        "audio_B": "https://ejkennedy.github.io/piano-eval-audio/audio/noised/snr30/piece_06/generated.mp3",
+        "audio_C": "https://ejkennedy.github.io/piano-eval-audio/audio/noised/snr30/piece_06/original.mp3",
+        "audio_X": "https://ejkennedy.github.io/piano-eval-audio/audio/noised/snr30/piece_06/generated.mp3"
+      },
+      {
+        "excerpt": "piece_06",
+        "snr_label": "Noise level (30 dB SNR)",
+        "snr_tag": "snr30",
+        "x_condition": "fluidsynth",
+        "audio_A": "https://ejkennedy.github.io/piano-eval-audio/audio/noised/snr30/piece_06/fluidsynth.mp3",
+        "audio_B": "https://ejkennedy.github.io/piano-eval-audio/audio/noised/snr30/piece_06/generated.mp3",
+        "audio_C": "https://ejkennedy.github.io/piano-eval-audio/audio/noised/snr30/piece_06/original.mp3",
+        "audio_X": "https://ejkennedy.github.io/piano-eval-audio/audio/noised/snr30/piece_06/fluidsynth.mp3"
       },
       {
         "excerpt": "piece_28",
@@ -408,11 +420,61 @@ const allBlocks = [
         "excerpt": "piece_13",
         "snr_label": "Noise level (15 dB SNR)",
         "snr_tag": "snr15",
-        "x_condition": "fluidsynth",
+        "x_condition": "generated",
         "audio_A": "https://ejkennedy.github.io/piano-eval-audio/audio/noised/snr15/piece_13/fluidsynth.mp3",
         "audio_B": "https://ejkennedy.github.io/piano-eval-audio/audio/noised/snr15/piece_13/generated.mp3",
         "audio_C": "https://ejkennedy.github.io/piano-eval-audio/audio/noised/snr15/piece_13/original.mp3",
-        "audio_X": "https://ejkennedy.github.io/piano-eval-audio/audio/noised/snr15/piece_13/fluidsynth.mp3"
+        "audio_X": "https://ejkennedy.github.io/piano-eval-audio/audio/noised/snr15/piece_13/generated.mp3"
+      },
+      {
+        "excerpt": "piece_06",
+        "snr_label": "Noise level (15 dB SNR)",
+        "snr_tag": "snr15",
+        "x_condition": "original",
+        "audio_A": "https://ejkennedy.github.io/piano-eval-audio/audio/noised/snr15/piece_06/fluidsynth.mp3",
+        "audio_B": "https://ejkennedy.github.io/piano-eval-audio/audio/noised/snr15/piece_06/generated.mp3",
+        "audio_C": "https://ejkennedy.github.io/piano-eval-audio/audio/noised/snr15/piece_06/original.mp3",
+        "audio_X": "https://ejkennedy.github.io/piano-eval-audio/audio/noised/snr15/piece_06/original.mp3"
+      },
+      {
+        "excerpt": "piece_25",
+        "snr_label": "Noise level (15 dB SNR)",
+        "snr_tag": "snr15",
+        "x_condition": "fluidsynth",
+        "audio_A": "https://ejkennedy.github.io/piano-eval-audio/audio/noised/snr15/piece_25/fluidsynth.mp3",
+        "audio_B": "https://ejkennedy.github.io/piano-eval-audio/audio/noised/snr15/piece_25/generated.mp3",
+        "audio_C": "https://ejkennedy.github.io/piano-eval-audio/audio/noised/snr15/piece_25/original.mp3",
+        "audio_X": "https://ejkennedy.github.io/piano-eval-audio/audio/noised/snr15/piece_25/fluidsynth.mp3"
+      },
+      {
+        "excerpt": "piece_06",
+        "snr_label": "Noise level (15 dB SNR)",
+        "snr_tag": "snr15",
+        "x_condition": "generated",
+        "audio_A": "https://ejkennedy.github.io/piano-eval-audio/audio/noised/snr15/piece_06/fluidsynth.mp3",
+        "audio_B": "https://ejkennedy.github.io/piano-eval-audio/audio/noised/snr15/piece_06/generated.mp3",
+        "audio_C": "https://ejkennedy.github.io/piano-eval-audio/audio/noised/snr15/piece_06/original.mp3",
+        "audio_X": "https://ejkennedy.github.io/piano-eval-audio/audio/noised/snr15/piece_06/generated.mp3"
+      },
+      {
+        "excerpt": "piece_17",
+        "snr_label": "Noise level (15 dB SNR)",
+        "snr_tag": "snr15",
+        "x_condition": "generated",
+        "audio_A": "https://ejkennedy.github.io/piano-eval-audio/audio/noised/snr15/piece_17/fluidsynth.mp3",
+        "audio_B": "https://ejkennedy.github.io/piano-eval-audio/audio/noised/snr15/piece_17/generated.mp3",
+        "audio_C": "https://ejkennedy.github.io/piano-eval-audio/audio/noised/snr15/piece_17/original.mp3",
+        "audio_X": "https://ejkennedy.github.io/piano-eval-audio/audio/noised/snr15/piece_17/generated.mp3"
+      },
+      {
+        "excerpt": "piece_06",
+        "snr_label": "Noise level (15 dB SNR)",
+        "snr_tag": "snr15",
+        "x_condition": "fluidsynth",
+        "audio_A": "https://ejkennedy.github.io/piano-eval-audio/audio/noised/snr15/piece_06/fluidsynth.mp3",
+        "audio_B": "https://ejkennedy.github.io/piano-eval-audio/audio/noised/snr15/piece_06/generated.mp3",
+        "audio_C": "https://ejkennedy.github.io/piano-eval-audio/audio/noised/snr15/piece_06/original.mp3",
+        "audio_X": "https://ejkennedy.github.io/piano-eval-audio/audio/noised/snr15/piece_06/fluidsynth.mp3"
       },
       {
         "excerpt": "piece_13",
@@ -423,26 +485,6 @@ const allBlocks = [
         "audio_B": "https://ejkennedy.github.io/piano-eval-audio/audio/noised/snr15/piece_13/generated.mp3",
         "audio_C": "https://ejkennedy.github.io/piano-eval-audio/audio/noised/snr15/piece_13/original.mp3",
         "audio_X": "https://ejkennedy.github.io/piano-eval-audio/audio/noised/snr15/piece_13/original.mp3"
-      },
-      {
-        "excerpt": "piece_25",
-        "snr_label": "Noise level (15 dB SNR)",
-        "snr_tag": "snr15",
-        "x_condition": "original",
-        "audio_A": "https://ejkennedy.github.io/piano-eval-audio/audio/noised/snr15/piece_25/fluidsynth.mp3",
-        "audio_B": "https://ejkennedy.github.io/piano-eval-audio/audio/noised/snr15/piece_25/generated.mp3",
-        "audio_C": "https://ejkennedy.github.io/piano-eval-audio/audio/noised/snr15/piece_25/original.mp3",
-        "audio_X": "https://ejkennedy.github.io/piano-eval-audio/audio/noised/snr15/piece_25/original.mp3"
-      },
-      {
-        "excerpt": "piece_17",
-        "snr_label": "Noise level (15 dB SNR)",
-        "snr_tag": "snr15",
-        "x_condition": "fluidsynth",
-        "audio_A": "https://ejkennedy.github.io/piano-eval-audio/audio/noised/snr15/piece_17/fluidsynth.mp3",
-        "audio_B": "https://ejkennedy.github.io/piano-eval-audio/audio/noised/snr15/piece_17/generated.mp3",
-        "audio_C": "https://ejkennedy.github.io/piano-eval-audio/audio/noised/snr15/piece_17/original.mp3",
-        "audio_X": "https://ejkennedy.github.io/piano-eval-audio/audio/noised/snr15/piece_17/fluidsynth.mp3"
       },
       {
         "excerpt": "piece_17",
@@ -475,24 +517,24 @@ const allBlocks = [
         "audio_X": "https://ejkennedy.github.io/piano-eval-audio/audio/noised/snr15/piece_28/generated.mp3"
       },
       {
-        "excerpt": "piece_06",
+        "excerpt": "piece_28",
         "snr_label": "Noise level (15 dB SNR)",
         "snr_tag": "snr15",
         "x_condition": "fluidsynth",
-        "audio_A": "https://ejkennedy.github.io/piano-eval-audio/audio/noised/snr15/piece_06/fluidsynth.mp3",
-        "audio_B": "https://ejkennedy.github.io/piano-eval-audio/audio/noised/snr15/piece_06/generated.mp3",
-        "audio_C": "https://ejkennedy.github.io/piano-eval-audio/audio/noised/snr15/piece_06/original.mp3",
-        "audio_X": "https://ejkennedy.github.io/piano-eval-audio/audio/noised/snr15/piece_06/fluidsynth.mp3"
+        "audio_A": "https://ejkennedy.github.io/piano-eval-audio/audio/noised/snr15/piece_28/fluidsynth.mp3",
+        "audio_B": "https://ejkennedy.github.io/piano-eval-audio/audio/noised/snr15/piece_28/generated.mp3",
+        "audio_C": "https://ejkennedy.github.io/piano-eval-audio/audio/noised/snr15/piece_28/original.mp3",
+        "audio_X": "https://ejkennedy.github.io/piano-eval-audio/audio/noised/snr15/piece_28/fluidsynth.mp3"
       },
       {
-        "excerpt": "piece_25",
+        "excerpt": "piece_13",
         "snr_label": "Noise level (15 dB SNR)",
         "snr_tag": "snr15",
         "x_condition": "fluidsynth",
-        "audio_A": "https://ejkennedy.github.io/piano-eval-audio/audio/noised/snr15/piece_25/fluidsynth.mp3",
-        "audio_B": "https://ejkennedy.github.io/piano-eval-audio/audio/noised/snr15/piece_25/generated.mp3",
-        "audio_C": "https://ejkennedy.github.io/piano-eval-audio/audio/noised/snr15/piece_25/original.mp3",
-        "audio_X": "https://ejkennedy.github.io/piano-eval-audio/audio/noised/snr15/piece_25/fluidsynth.mp3"
+        "audio_A": "https://ejkennedy.github.io/piano-eval-audio/audio/noised/snr15/piece_13/fluidsynth.mp3",
+        "audio_B": "https://ejkennedy.github.io/piano-eval-audio/audio/noised/snr15/piece_13/generated.mp3",
+        "audio_C": "https://ejkennedy.github.io/piano-eval-audio/audio/noised/snr15/piece_13/original.mp3",
+        "audio_X": "https://ejkennedy.github.io/piano-eval-audio/audio/noised/snr15/piece_13/fluidsynth.mp3"
       },
       {
         "excerpt": "piece_25",
@@ -505,54 +547,24 @@ const allBlocks = [
         "audio_X": "https://ejkennedy.github.io/piano-eval-audio/audio/noised/snr15/piece_25/generated.mp3"
       },
       {
-        "excerpt": "piece_13",
-        "snr_label": "Noise level (15 dB SNR)",
-        "snr_tag": "snr15",
-        "x_condition": "generated",
-        "audio_A": "https://ejkennedy.github.io/piano-eval-audio/audio/noised/snr15/piece_13/fluidsynth.mp3",
-        "audio_B": "https://ejkennedy.github.io/piano-eval-audio/audio/noised/snr15/piece_13/generated.mp3",
-        "audio_C": "https://ejkennedy.github.io/piano-eval-audio/audio/noised/snr15/piece_13/original.mp3",
-        "audio_X": "https://ejkennedy.github.io/piano-eval-audio/audio/noised/snr15/piece_13/generated.mp3"
-      },
-      {
-        "excerpt": "piece_06",
-        "snr_label": "Noise level (15 dB SNR)",
-        "snr_tag": "snr15",
-        "x_condition": "original",
-        "audio_A": "https://ejkennedy.github.io/piano-eval-audio/audio/noised/snr15/piece_06/fluidsynth.mp3",
-        "audio_B": "https://ejkennedy.github.io/piano-eval-audio/audio/noised/snr15/piece_06/generated.mp3",
-        "audio_C": "https://ejkennedy.github.io/piano-eval-audio/audio/noised/snr15/piece_06/original.mp3",
-        "audio_X": "https://ejkennedy.github.io/piano-eval-audio/audio/noised/snr15/piece_06/original.mp3"
-      },
-      {
-        "excerpt": "piece_06",
-        "snr_label": "Noise level (15 dB SNR)",
-        "snr_tag": "snr15",
-        "x_condition": "generated",
-        "audio_A": "https://ejkennedy.github.io/piano-eval-audio/audio/noised/snr15/piece_06/fluidsynth.mp3",
-        "audio_B": "https://ejkennedy.github.io/piano-eval-audio/audio/noised/snr15/piece_06/generated.mp3",
-        "audio_C": "https://ejkennedy.github.io/piano-eval-audio/audio/noised/snr15/piece_06/original.mp3",
-        "audio_X": "https://ejkennedy.github.io/piano-eval-audio/audio/noised/snr15/piece_06/generated.mp3"
-      },
-      {
-        "excerpt": "piece_28",
-        "snr_label": "Noise level (15 dB SNR)",
-        "snr_tag": "snr15",
-        "x_condition": "fluidsynth",
-        "audio_A": "https://ejkennedy.github.io/piano-eval-audio/audio/noised/snr15/piece_28/fluidsynth.mp3",
-        "audio_B": "https://ejkennedy.github.io/piano-eval-audio/audio/noised/snr15/piece_28/generated.mp3",
-        "audio_C": "https://ejkennedy.github.io/piano-eval-audio/audio/noised/snr15/piece_28/original.mp3",
-        "audio_X": "https://ejkennedy.github.io/piano-eval-audio/audio/noised/snr15/piece_28/fluidsynth.mp3"
-      },
-      {
         "excerpt": "piece_17",
         "snr_label": "Noise level (15 dB SNR)",
         "snr_tag": "snr15",
-        "x_condition": "generated",
+        "x_condition": "fluidsynth",
         "audio_A": "https://ejkennedy.github.io/piano-eval-audio/audio/noised/snr15/piece_17/fluidsynth.mp3",
         "audio_B": "https://ejkennedy.github.io/piano-eval-audio/audio/noised/snr15/piece_17/generated.mp3",
         "audio_C": "https://ejkennedy.github.io/piano-eval-audio/audio/noised/snr15/piece_17/original.mp3",
-        "audio_X": "https://ejkennedy.github.io/piano-eval-audio/audio/noised/snr15/piece_17/generated.mp3"
+        "audio_X": "https://ejkennedy.github.io/piano-eval-audio/audio/noised/snr15/piece_17/fluidsynth.mp3"
+      },
+      {
+        "excerpt": "piece_25",
+        "snr_label": "Noise level (15 dB SNR)",
+        "snr_tag": "snr15",
+        "x_condition": "original",
+        "audio_A": "https://ejkennedy.github.io/piano-eval-audio/audio/noised/snr15/piece_25/fluidsynth.mp3",
+        "audio_B": "https://ejkennedy.github.io/piano-eval-audio/audio/noised/snr15/piece_25/generated.mp3",
+        "audio_C": "https://ejkennedy.github.io/piano-eval-audio/audio/noised/snr15/piece_25/original.mp3",
+        "audio_X": "https://ejkennedy.github.io/piano-eval-audio/audio/noised/snr15/piece_25/original.mp3"
       }
     ]
   },
@@ -564,14 +576,44 @@ const allBlocks = [
     },
     "trials": [
       {
-        "excerpt": "piece_25",
+        "excerpt": "piece_13",
         "snr_label": "Noise level (0 dB SNR)",
         "snr_tag": "snr0",
         "x_condition": "fluidsynth",
+        "audio_A": "https://ejkennedy.github.io/piano-eval-audio/audio/noised/snr0/piece_13/fluidsynth.mp3",
+        "audio_B": "https://ejkennedy.github.io/piano-eval-audio/audio/noised/snr0/piece_13/generated.mp3",
+        "audio_C": "https://ejkennedy.github.io/piano-eval-audio/audio/noised/snr0/piece_13/original.mp3",
+        "audio_X": "https://ejkennedy.github.io/piano-eval-audio/audio/noised/snr0/piece_13/fluidsynth.mp3"
+      },
+      {
+        "excerpt": "piece_13",
+        "snr_label": "Noise level (0 dB SNR)",
+        "snr_tag": "snr0",
+        "x_condition": "original",
+        "audio_A": "https://ejkennedy.github.io/piano-eval-audio/audio/noised/snr0/piece_13/fluidsynth.mp3",
+        "audio_B": "https://ejkennedy.github.io/piano-eval-audio/audio/noised/snr0/piece_13/generated.mp3",
+        "audio_C": "https://ejkennedy.github.io/piano-eval-audio/audio/noised/snr0/piece_13/original.mp3",
+        "audio_X": "https://ejkennedy.github.io/piano-eval-audio/audio/noised/snr0/piece_13/original.mp3"
+      },
+      {
+        "excerpt": "piece_25",
+        "snr_label": "Noise level (0 dB SNR)",
+        "snr_tag": "snr0",
+        "x_condition": "original",
         "audio_A": "https://ejkennedy.github.io/piano-eval-audio/audio/noised/snr0/piece_25/fluidsynth.mp3",
         "audio_B": "https://ejkennedy.github.io/piano-eval-audio/audio/noised/snr0/piece_25/generated.mp3",
         "audio_C": "https://ejkennedy.github.io/piano-eval-audio/audio/noised/snr0/piece_25/original.mp3",
-        "audio_X": "https://ejkennedy.github.io/piano-eval-audio/audio/noised/snr0/piece_25/fluidsynth.mp3"
+        "audio_X": "https://ejkennedy.github.io/piano-eval-audio/audio/noised/snr0/piece_25/original.mp3"
+      },
+      {
+        "excerpt": "piece_06",
+        "snr_label": "Noise level (0 dB SNR)",
+        "snr_tag": "snr0",
+        "x_condition": "generated",
+        "audio_A": "https://ejkennedy.github.io/piano-eval-audio/audio/noised/snr0/piece_06/fluidsynth.mp3",
+        "audio_B": "https://ejkennedy.github.io/piano-eval-audio/audio/noised/snr0/piece_06/generated.mp3",
+        "audio_C": "https://ejkennedy.github.io/piano-eval-audio/audio/noised/snr0/piece_06/original.mp3",
+        "audio_X": "https://ejkennedy.github.io/piano-eval-audio/audio/noised/snr0/piece_06/generated.mp3"
       },
       {
         "excerpt": "piece_17",
@@ -584,24 +626,24 @@ const allBlocks = [
         "audio_X": "https://ejkennedy.github.io/piano-eval-audio/audio/noised/snr0/piece_17/original.mp3"
       },
       {
-        "excerpt": "piece_13",
-        "snr_label": "Noise level (0 dB SNR)",
-        "snr_tag": "snr0",
-        "x_condition": "fluidsynth",
-        "audio_A": "https://ejkennedy.github.io/piano-eval-audio/audio/noised/snr0/piece_13/fluidsynth.mp3",
-        "audio_B": "https://ejkennedy.github.io/piano-eval-audio/audio/noised/snr0/piece_13/generated.mp3",
-        "audio_C": "https://ejkennedy.github.io/piano-eval-audio/audio/noised/snr0/piece_13/original.mp3",
-        "audio_X": "https://ejkennedy.github.io/piano-eval-audio/audio/noised/snr0/piece_13/fluidsynth.mp3"
-      },
-      {
-        "excerpt": "piece_17",
+        "excerpt": "piece_25",
         "snr_label": "Noise level (0 dB SNR)",
         "snr_tag": "snr0",
         "x_condition": "generated",
-        "audio_A": "https://ejkennedy.github.io/piano-eval-audio/audio/noised/snr0/piece_17/fluidsynth.mp3",
-        "audio_B": "https://ejkennedy.github.io/piano-eval-audio/audio/noised/snr0/piece_17/generated.mp3",
-        "audio_C": "https://ejkennedy.github.io/piano-eval-audio/audio/noised/snr0/piece_17/original.mp3",
-        "audio_X": "https://ejkennedy.github.io/piano-eval-audio/audio/noised/snr0/piece_17/generated.mp3"
+        "audio_A": "https://ejkennedy.github.io/piano-eval-audio/audio/noised/snr0/piece_25/fluidsynth.mp3",
+        "audio_B": "https://ejkennedy.github.io/piano-eval-audio/audio/noised/snr0/piece_25/generated.mp3",
+        "audio_C": "https://ejkennedy.github.io/piano-eval-audio/audio/noised/snr0/piece_25/original.mp3",
+        "audio_X": "https://ejkennedy.github.io/piano-eval-audio/audio/noised/snr0/piece_25/generated.mp3"
+      },
+      {
+        "excerpt": "piece_25",
+        "snr_label": "Noise level (0 dB SNR)",
+        "snr_tag": "snr0",
+        "x_condition": "fluidsynth",
+        "audio_A": "https://ejkennedy.github.io/piano-eval-audio/audio/noised/snr0/piece_25/fluidsynth.mp3",
+        "audio_B": "https://ejkennedy.github.io/piano-eval-audio/audio/noised/snr0/piece_25/generated.mp3",
+        "audio_C": "https://ejkennedy.github.io/piano-eval-audio/audio/noised/snr0/piece_25/original.mp3",
+        "audio_X": "https://ejkennedy.github.io/piano-eval-audio/audio/noised/snr0/piece_25/fluidsynth.mp3"
       },
       {
         "excerpt": "piece_13",
@@ -617,16 +659,6 @@ const allBlocks = [
         "excerpt": "piece_06",
         "snr_label": "Noise level (0 dB SNR)",
         "snr_tag": "snr0",
-        "x_condition": "fluidsynth",
-        "audio_A": "https://ejkennedy.github.io/piano-eval-audio/audio/noised/snr0/piece_06/fluidsynth.mp3",
-        "audio_B": "https://ejkennedy.github.io/piano-eval-audio/audio/noised/snr0/piece_06/generated.mp3",
-        "audio_C": "https://ejkennedy.github.io/piano-eval-audio/audio/noised/snr0/piece_06/original.mp3",
-        "audio_X": "https://ejkennedy.github.io/piano-eval-audio/audio/noised/snr0/piece_06/fluidsynth.mp3"
-      },
-      {
-        "excerpt": "piece_06",
-        "snr_label": "Noise level (0 dB SNR)",
-        "snr_tag": "snr0",
         "x_condition": "original",
         "audio_A": "https://ejkennedy.github.io/piano-eval-audio/audio/noised/snr0/piece_06/fluidsynth.mp3",
         "audio_B": "https://ejkennedy.github.io/piano-eval-audio/audio/noised/snr0/piece_06/generated.mp3",
@@ -637,11 +669,11 @@ const allBlocks = [
         "excerpt": "piece_06",
         "snr_label": "Noise level (0 dB SNR)",
         "snr_tag": "snr0",
-        "x_condition": "generated",
+        "x_condition": "fluidsynth",
         "audio_A": "https://ejkennedy.github.io/piano-eval-audio/audio/noised/snr0/piece_06/fluidsynth.mp3",
         "audio_B": "https://ejkennedy.github.io/piano-eval-audio/audio/noised/snr0/piece_06/generated.mp3",
         "audio_C": "https://ejkennedy.github.io/piano-eval-audio/audio/noised/snr0/piece_06/original.mp3",
-        "audio_X": "https://ejkennedy.github.io/piano-eval-audio/audio/noised/snr0/piece_06/generated.mp3"
+        "audio_X": "https://ejkennedy.github.io/piano-eval-audio/audio/noised/snr0/piece_06/fluidsynth.mp3"
       },
       {
         "excerpt": "piece_28",
@@ -654,14 +686,14 @@ const allBlocks = [
         "audio_X": "https://ejkennedy.github.io/piano-eval-audio/audio/noised/snr0/piece_28/original.mp3"
       },
       {
-        "excerpt": "piece_25",
+        "excerpt": "piece_28",
         "snr_label": "Noise level (0 dB SNR)",
         "snr_tag": "snr0",
-        "x_condition": "original",
-        "audio_A": "https://ejkennedy.github.io/piano-eval-audio/audio/noised/snr0/piece_25/fluidsynth.mp3",
-        "audio_B": "https://ejkennedy.github.io/piano-eval-audio/audio/noised/snr0/piece_25/generated.mp3",
-        "audio_C": "https://ejkennedy.github.io/piano-eval-audio/audio/noised/snr0/piece_25/original.mp3",
-        "audio_X": "https://ejkennedy.github.io/piano-eval-audio/audio/noised/snr0/piece_25/original.mp3"
+        "x_condition": "generated",
+        "audio_A": "https://ejkennedy.github.io/piano-eval-audio/audio/noised/snr0/piece_28/fluidsynth.mp3",
+        "audio_B": "https://ejkennedy.github.io/piano-eval-audio/audio/noised/snr0/piece_28/generated.mp3",
+        "audio_C": "https://ejkennedy.github.io/piano-eval-audio/audio/noised/snr0/piece_28/original.mp3",
+        "audio_X": "https://ejkennedy.github.io/piano-eval-audio/audio/noised/snr0/piece_28/generated.mp3"
       },
       {
         "excerpt": "piece_28",
@@ -674,14 +706,14 @@ const allBlocks = [
         "audio_X": "https://ejkennedy.github.io/piano-eval-audio/audio/noised/snr0/piece_28/fluidsynth.mp3"
       },
       {
-        "excerpt": "piece_13",
+        "excerpt": "piece_17",
         "snr_label": "Noise level (0 dB SNR)",
         "snr_tag": "snr0",
-        "x_condition": "original",
-        "audio_A": "https://ejkennedy.github.io/piano-eval-audio/audio/noised/snr0/piece_13/fluidsynth.mp3",
-        "audio_B": "https://ejkennedy.github.io/piano-eval-audio/audio/noised/snr0/piece_13/generated.mp3",
-        "audio_C": "https://ejkennedy.github.io/piano-eval-audio/audio/noised/snr0/piece_13/original.mp3",
-        "audio_X": "https://ejkennedy.github.io/piano-eval-audio/audio/noised/snr0/piece_13/original.mp3"
+        "x_condition": "generated",
+        "audio_A": "https://ejkennedy.github.io/piano-eval-audio/audio/noised/snr0/piece_17/fluidsynth.mp3",
+        "audio_B": "https://ejkennedy.github.io/piano-eval-audio/audio/noised/snr0/piece_17/generated.mp3",
+        "audio_C": "https://ejkennedy.github.io/piano-eval-audio/audio/noised/snr0/piece_17/original.mp3",
+        "audio_X": "https://ejkennedy.github.io/piano-eval-audio/audio/noised/snr0/piece_17/generated.mp3"
       },
       {
         "excerpt": "piece_17",
@@ -692,26 +724,6 @@ const allBlocks = [
         "audio_B": "https://ejkennedy.github.io/piano-eval-audio/audio/noised/snr0/piece_17/generated.mp3",
         "audio_C": "https://ejkennedy.github.io/piano-eval-audio/audio/noised/snr0/piece_17/original.mp3",
         "audio_X": "https://ejkennedy.github.io/piano-eval-audio/audio/noised/snr0/piece_17/fluidsynth.mp3"
-      },
-      {
-        "excerpt": "piece_28",
-        "snr_label": "Noise level (0 dB SNR)",
-        "snr_tag": "snr0",
-        "x_condition": "generated",
-        "audio_A": "https://ejkennedy.github.io/piano-eval-audio/audio/noised/snr0/piece_28/fluidsynth.mp3",
-        "audio_B": "https://ejkennedy.github.io/piano-eval-audio/audio/noised/snr0/piece_28/generated.mp3",
-        "audio_C": "https://ejkennedy.github.io/piano-eval-audio/audio/noised/snr0/piece_28/original.mp3",
-        "audio_X": "https://ejkennedy.github.io/piano-eval-audio/audio/noised/snr0/piece_28/generated.mp3"
-      },
-      {
-        "excerpt": "piece_25",
-        "snr_label": "Noise level (0 dB SNR)",
-        "snr_tag": "snr0",
-        "x_condition": "generated",
-        "audio_A": "https://ejkennedy.github.io/piano-eval-audio/audio/noised/snr0/piece_25/fluidsynth.mp3",
-        "audio_B": "https://ejkennedy.github.io/piano-eval-audio/audio/noised/snr0/piece_25/generated.mp3",
-        "audio_C": "https://ejkennedy.github.io/piano-eval-audio/audio/noised/snr0/piece_25/original.mp3",
-        "audio_X": "https://ejkennedy.github.io/piano-eval-audio/audio/noised/snr0/piece_25/generated.mp3"
       }
     ]
   },
@@ -723,34 +735,14 @@ const allBlocks = [
     },
     "trials": [
       {
-        "excerpt": "piece_17",
+        "excerpt": "piece_28",
         "snr_label": "Noise level (-15 dB SNR)",
         "snr_tag": "snr-15",
-        "x_condition": "original",
-        "audio_A": "https://ejkennedy.github.io/piano-eval-audio/audio/noised/snr-15/piece_17/fluidsynth.mp3",
-        "audio_B": "https://ejkennedy.github.io/piano-eval-audio/audio/noised/snr-15/piece_17/generated.mp3",
-        "audio_C": "https://ejkennedy.github.io/piano-eval-audio/audio/noised/snr-15/piece_17/original.mp3",
-        "audio_X": "https://ejkennedy.github.io/piano-eval-audio/audio/noised/snr-15/piece_17/original.mp3"
-      },
-      {
-        "excerpt": "piece_06",
-        "snr_label": "Noise level (-15 dB SNR)",
-        "snr_tag": "snr-15",
-        "x_condition": "original",
-        "audio_A": "https://ejkennedy.github.io/piano-eval-audio/audio/noised/snr-15/piece_06/fluidsynth.mp3",
-        "audio_B": "https://ejkennedy.github.io/piano-eval-audio/audio/noised/snr-15/piece_06/generated.mp3",
-        "audio_C": "https://ejkennedy.github.io/piano-eval-audio/audio/noised/snr-15/piece_06/original.mp3",
-        "audio_X": "https://ejkennedy.github.io/piano-eval-audio/audio/noised/snr-15/piece_06/original.mp3"
-      },
-      {
-        "excerpt": "piece_06",
-        "snr_label": "Noise level (-15 dB SNR)",
-        "snr_tag": "snr-15",
-        "x_condition": "generated",
-        "audio_A": "https://ejkennedy.github.io/piano-eval-audio/audio/noised/snr-15/piece_06/fluidsynth.mp3",
-        "audio_B": "https://ejkennedy.github.io/piano-eval-audio/audio/noised/snr-15/piece_06/generated.mp3",
-        "audio_C": "https://ejkennedy.github.io/piano-eval-audio/audio/noised/snr-15/piece_06/original.mp3",
-        "audio_X": "https://ejkennedy.github.io/piano-eval-audio/audio/noised/snr-15/piece_06/generated.mp3"
+        "x_condition": "fluidsynth",
+        "audio_A": "https://ejkennedy.github.io/piano-eval-audio/audio/noised/snr-15/piece_28/fluidsynth.mp3",
+        "audio_B": "https://ejkennedy.github.io/piano-eval-audio/audio/noised/snr-15/piece_28/generated.mp3",
+        "audio_C": "https://ejkennedy.github.io/piano-eval-audio/audio/noised/snr-15/piece_28/original.mp3",
+        "audio_X": "https://ejkennedy.github.io/piano-eval-audio/audio/noised/snr-15/piece_28/fluidsynth.mp3"
       },
       {
         "excerpt": "piece_17",
@@ -773,34 +765,24 @@ const allBlocks = [
         "audio_X": "https://ejkennedy.github.io/piano-eval-audio/audio/noised/snr-15/piece_25/fluidsynth.mp3"
       },
       {
-        "excerpt": "piece_13",
-        "snr_label": "Noise level (-15 dB SNR)",
-        "snr_tag": "snr-15",
-        "x_condition": "generated",
-        "audio_A": "https://ejkennedy.github.io/piano-eval-audio/audio/noised/snr-15/piece_13/fluidsynth.mp3",
-        "audio_B": "https://ejkennedy.github.io/piano-eval-audio/audio/noised/snr-15/piece_13/generated.mp3",
-        "audio_C": "https://ejkennedy.github.io/piano-eval-audio/audio/noised/snr-15/piece_13/original.mp3",
-        "audio_X": "https://ejkennedy.github.io/piano-eval-audio/audio/noised/snr-15/piece_13/generated.mp3"
-      },
-      {
         "excerpt": "piece_06",
         "snr_label": "Noise level (-15 dB SNR)",
         "snr_tag": "snr-15",
-        "x_condition": "fluidsynth",
+        "x_condition": "original",
         "audio_A": "https://ejkennedy.github.io/piano-eval-audio/audio/noised/snr-15/piece_06/fluidsynth.mp3",
         "audio_B": "https://ejkennedy.github.io/piano-eval-audio/audio/noised/snr-15/piece_06/generated.mp3",
         "audio_C": "https://ejkennedy.github.io/piano-eval-audio/audio/noised/snr-15/piece_06/original.mp3",
-        "audio_X": "https://ejkennedy.github.io/piano-eval-audio/audio/noised/snr-15/piece_06/fluidsynth.mp3"
+        "audio_X": "https://ejkennedy.github.io/piano-eval-audio/audio/noised/snr-15/piece_06/original.mp3"
       },
       {
-        "excerpt": "piece_25",
+        "excerpt": "piece_17",
         "snr_label": "Noise level (-15 dB SNR)",
         "snr_tag": "snr-15",
         "x_condition": "original",
-        "audio_A": "https://ejkennedy.github.io/piano-eval-audio/audio/noised/snr-15/piece_25/fluidsynth.mp3",
-        "audio_B": "https://ejkennedy.github.io/piano-eval-audio/audio/noised/snr-15/piece_25/generated.mp3",
-        "audio_C": "https://ejkennedy.github.io/piano-eval-audio/audio/noised/snr-15/piece_25/original.mp3",
-        "audio_X": "https://ejkennedy.github.io/piano-eval-audio/audio/noised/snr-15/piece_25/original.mp3"
+        "audio_A": "https://ejkennedy.github.io/piano-eval-audio/audio/noised/snr-15/piece_17/fluidsynth.mp3",
+        "audio_B": "https://ejkennedy.github.io/piano-eval-audio/audio/noised/snr-15/piece_17/generated.mp3",
+        "audio_C": "https://ejkennedy.github.io/piano-eval-audio/audio/noised/snr-15/piece_17/original.mp3",
+        "audio_X": "https://ejkennedy.github.io/piano-eval-audio/audio/noised/snr-15/piece_17/original.mp3"
       },
       {
         "excerpt": "piece_28",
@@ -813,14 +795,14 @@ const allBlocks = [
         "audio_X": "https://ejkennedy.github.io/piano-eval-audio/audio/noised/snr-15/piece_28/generated.mp3"
       },
       {
-        "excerpt": "piece_28",
+        "excerpt": "piece_06",
         "snr_label": "Noise level (-15 dB SNR)",
         "snr_tag": "snr-15",
         "x_condition": "fluidsynth",
-        "audio_A": "https://ejkennedy.github.io/piano-eval-audio/audio/noised/snr-15/piece_28/fluidsynth.mp3",
-        "audio_B": "https://ejkennedy.github.io/piano-eval-audio/audio/noised/snr-15/piece_28/generated.mp3",
-        "audio_C": "https://ejkennedy.github.io/piano-eval-audio/audio/noised/snr-15/piece_28/original.mp3",
-        "audio_X": "https://ejkennedy.github.io/piano-eval-audio/audio/noised/snr-15/piece_28/fluidsynth.mp3"
+        "audio_A": "https://ejkennedy.github.io/piano-eval-audio/audio/noised/snr-15/piece_06/fluidsynth.mp3",
+        "audio_B": "https://ejkennedy.github.io/piano-eval-audio/audio/noised/snr-15/piece_06/generated.mp3",
+        "audio_C": "https://ejkennedy.github.io/piano-eval-audio/audio/noised/snr-15/piece_06/original.mp3",
+        "audio_X": "https://ejkennedy.github.io/piano-eval-audio/audio/noised/snr-15/piece_06/fluidsynth.mp3"
       },
       {
         "excerpt": "piece_13",
@@ -833,6 +815,36 @@ const allBlocks = [
         "audio_X": "https://ejkennedy.github.io/piano-eval-audio/audio/noised/snr-15/piece_13/fluidsynth.mp3"
       },
       {
+        "excerpt": "piece_13",
+        "snr_label": "Noise level (-15 dB SNR)",
+        "snr_tag": "snr-15",
+        "x_condition": "generated",
+        "audio_A": "https://ejkennedy.github.io/piano-eval-audio/audio/noised/snr-15/piece_13/fluidsynth.mp3",
+        "audio_B": "https://ejkennedy.github.io/piano-eval-audio/audio/noised/snr-15/piece_13/generated.mp3",
+        "audio_C": "https://ejkennedy.github.io/piano-eval-audio/audio/noised/snr-15/piece_13/original.mp3",
+        "audio_X": "https://ejkennedy.github.io/piano-eval-audio/audio/noised/snr-15/piece_13/generated.mp3"
+      },
+      {
+        "excerpt": "piece_25",
+        "snr_label": "Noise level (-15 dB SNR)",
+        "snr_tag": "snr-15",
+        "x_condition": "generated",
+        "audio_A": "https://ejkennedy.github.io/piano-eval-audio/audio/noised/snr-15/piece_25/fluidsynth.mp3",
+        "audio_B": "https://ejkennedy.github.io/piano-eval-audio/audio/noised/snr-15/piece_25/generated.mp3",
+        "audio_C": "https://ejkennedy.github.io/piano-eval-audio/audio/noised/snr-15/piece_25/original.mp3",
+        "audio_X": "https://ejkennedy.github.io/piano-eval-audio/audio/noised/snr-15/piece_25/generated.mp3"
+      },
+      {
+        "excerpt": "piece_06",
+        "snr_label": "Noise level (-15 dB SNR)",
+        "snr_tag": "snr-15",
+        "x_condition": "generated",
+        "audio_A": "https://ejkennedy.github.io/piano-eval-audio/audio/noised/snr-15/piece_06/fluidsynth.mp3",
+        "audio_B": "https://ejkennedy.github.io/piano-eval-audio/audio/noised/snr-15/piece_06/generated.mp3",
+        "audio_C": "https://ejkennedy.github.io/piano-eval-audio/audio/noised/snr-15/piece_06/original.mp3",
+        "audio_X": "https://ejkennedy.github.io/piano-eval-audio/audio/noised/snr-15/piece_06/generated.mp3"
+      },
+      {
         "excerpt": "piece_17",
         "snr_label": "Noise level (-15 dB SNR)",
         "snr_tag": "snr-15",
@@ -841,16 +853,6 @@ const allBlocks = [
         "audio_B": "https://ejkennedy.github.io/piano-eval-audio/audio/noised/snr-15/piece_17/generated.mp3",
         "audio_C": "https://ejkennedy.github.io/piano-eval-audio/audio/noised/snr-15/piece_17/original.mp3",
         "audio_X": "https://ejkennedy.github.io/piano-eval-audio/audio/noised/snr-15/piece_17/generated.mp3"
-      },
-      {
-        "excerpt": "piece_28",
-        "snr_label": "Noise level (-15 dB SNR)",
-        "snr_tag": "snr-15",
-        "x_condition": "original",
-        "audio_A": "https://ejkennedy.github.io/piano-eval-audio/audio/noised/snr-15/piece_28/fluidsynth.mp3",
-        "audio_B": "https://ejkennedy.github.io/piano-eval-audio/audio/noised/snr-15/piece_28/generated.mp3",
-        "audio_C": "https://ejkennedy.github.io/piano-eval-audio/audio/noised/snr-15/piece_28/original.mp3",
-        "audio_X": "https://ejkennedy.github.io/piano-eval-audio/audio/noised/snr-15/piece_28/original.mp3"
       },
       {
         "excerpt": "piece_13",
@@ -866,11 +868,21 @@ const allBlocks = [
         "excerpt": "piece_25",
         "snr_label": "Noise level (-15 dB SNR)",
         "snr_tag": "snr-15",
-        "x_condition": "generated",
+        "x_condition": "original",
         "audio_A": "https://ejkennedy.github.io/piano-eval-audio/audio/noised/snr-15/piece_25/fluidsynth.mp3",
         "audio_B": "https://ejkennedy.github.io/piano-eval-audio/audio/noised/snr-15/piece_25/generated.mp3",
         "audio_C": "https://ejkennedy.github.io/piano-eval-audio/audio/noised/snr-15/piece_25/original.mp3",
-        "audio_X": "https://ejkennedy.github.io/piano-eval-audio/audio/noised/snr-15/piece_25/generated.mp3"
+        "audio_X": "https://ejkennedy.github.io/piano-eval-audio/audio/noised/snr-15/piece_25/original.mp3"
+      },
+      {
+        "excerpt": "piece_28",
+        "snr_label": "Noise level (-15 dB SNR)",
+        "snr_tag": "snr-15",
+        "x_condition": "original",
+        "audio_A": "https://ejkennedy.github.io/piano-eval-audio/audio/noised/snr-15/piece_28/fluidsynth.mp3",
+        "audio_B": "https://ejkennedy.github.io/piano-eval-audio/audio/noised/snr-15/piece_28/generated.mp3",
+        "audio_C": "https://ejkennedy.github.io/piano-eval-audio/audio/noised/snr-15/piece_28/original.mp3",
+        "audio_X": "https://ejkennedy.github.io/piano-eval-audio/audio/noised/snr-15/piece_28/original.mp3"
       }
     ]
   }
@@ -976,21 +988,20 @@ function makeTrialTimeline(trialData, isPractice) {
         <p><strong>X sounds most like:</strong></p>`;
     },
     choices: ["A — FluidSynth", "B — GAN Generated", "C — Real Piano"],
-    data: {
-      excerpt:      trialData.excerpt,
-      snr_tag:      trialData.snr_tag,
-      x_condition:  trialData.x_condition,
-      is_practice:  isPractice,
-      task:         "abcx",
-    },
     on_finish: function(data) {
+      if (isPractice) return;
       const chosen = ["fluidsynth", "generated", "original"][data.response];
-      data.response_label  = ["A", "B", "C"][data.response];
-      data.chose_condition = chosen;
-      data.correct         = chosen === data.x_condition;
-      // Key confusion cells for dissertation analysis
-      data.gan_as_real     = (data.x_condition === "generated" && chosen === "original");
-      data.fluid_as_real   = (data.x_condition === "fluidsynth" && chosen === "original");
+      results.push({
+        excerpt:        trialData.excerpt,
+        snr_tag:        trialData.snr_tag,
+        x_condition:    trialData.x_condition,
+        response_label: ["A","B","C"][data.response],
+        chose_condition: chosen,
+        correct:        chosen === trialData.x_condition,
+        rt:             Math.round(data.rt),
+        gan_as_real:    trialData.x_condition === "generated"  && chosen === "original",
+        fluid_as_real:  trialData.x_condition === "fluidsynth" && chosen === "original",
+      });
     },
   };
 }
@@ -999,11 +1010,9 @@ function makeTrialTimeline(trialData, isPractice) {
 
 const timeline = [welcome, equipment_check];
 
-// Practice trial (first trial from clean block, not recorded)
 const practiceTrialData = allBlocks[0].trials[0];
 timeline.push(practice_intro);
 timeline.push(makeTrialTimeline(practiceTrialData, true));
-
 timeline.push(test_intro);
 
 allBlocks.forEach(function(blockObj, blockIdx) {
@@ -1015,7 +1024,7 @@ allBlocks.forEach(function(blockObj, blockIdx) {
   });
 });
 
-// Post-session questionnaire
+// Post-session questionnaire (captures into questionnaire object)
 timeline.push({
   type: jsPsychSurveyText,
   questions: [
@@ -1023,7 +1032,13 @@ timeline.push({
     { prompt: "What headphones did you use?", name: "headphones", required: true },
     { prompt: "Any comments about the test?", name: "comments", rows: 3 },
   ],
-  data: { task: "post_questionnaire" },
+  on_finish: function(data) {
+    const r = data.response || {};
+    questionnaire.music_years = r.music_years || "";
+    questionnaire.headphones  = r.headphones  || "";
+    questionnaire.comments    = r.comments    || "";
+    downloadCSV();
+  },
 });
 
 timeline.push({
