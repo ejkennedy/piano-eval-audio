@@ -554,7 +554,7 @@ const welcome = {
       <br><br>
       You may replay any recording as many times as you like. There are no right or wrong answers.
       <br><br>
-      Use <strong>wired headphones</strong> and set a comfortable listening volume.
+      Use <strong>headphones</strong> and set a comfortable listening volume.
     </p>`,
   choices: ["Begin →"],
 };
@@ -565,7 +565,7 @@ const equipment_check = {
     <h3>Equipment Check</h3>
     <p>Please confirm the following before continuing:</p>
     <ul style="text-align:left;max-width:400px;margin:auto">
-      <li>You are wearing <strong>wired headphones</strong> (not Bluetooth)</li>
+      <li>You are wearing <strong>headphones</strong></li>
       <li>If your headphones have an EQ/enhancement app, it is <strong>disabled</strong></li>
       <li>Your volume is set to a comfortable level</li>
     </ul>`,
@@ -591,12 +591,19 @@ const test_intro = {
 };
 
 function makeBreakScreen(blockLabel) {
+  const volumeWarning = blockLabel.includes('-15')
+    ? `<p style="background:#fff3cd;border:1px solid #ffc107;border-radius:6px;padding:12px 16px;margin-top:16px;">
+        <strong>⚠️ Volume warning:</strong> The next block has very loud background noise.
+        Please lower your volume before continuing.
+       </p>`
+    : '';
   return {
     type: jsPsychHtmlButtonResponse,
     stimulus: `
       <h3>Short Break</h3>
       <p>Take 2–3 minutes to rest.</p>
-      <p>The next block is: <strong>${blockLabel}</strong></p>`,
+      <p>The next block is: <strong>${blockLabel}</strong></p>
+      ${volumeWarning}`,
     choices: ["Continue →"],
   };
 }
